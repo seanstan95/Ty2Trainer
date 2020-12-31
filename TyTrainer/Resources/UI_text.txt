@@ -1,0 +1,28 @@
+Bunyip Health: 
+Bunyip X: 
+Bunyip Y: 
+Bunyip Z: 
+Character State: 
+Current Music Title: 
+Heli Health (Visual): 
+Heli X: 
+Heli Y: 
+Heli Z: 
+Kart X: 
+Kart Y: 
+Kart Z: 
+Sub Health (Visual): 
+Sub X: 
+Sub Y: 
+Sub Z: 
+Truck Health (Internal): 
+Truck Health (Visual): 
+Truck X: 
+Truck Y: 
+Truck Z: 
+Ty Health: 
+Ty X: 
+Ty Horizontal Speed: 
+Ty Y: 
+Ty Y Speed: 
+Ty Z: 

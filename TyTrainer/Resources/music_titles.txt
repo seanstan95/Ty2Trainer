@@ -1,0 +1,10 @@
+b4 e1 e4 e4_ty
+a4_intro a4_end b4_intro b4_end c4_intro c4_outro e1_12 e1_13 e1_14 cassdefeated csp1_01 csp1_02 csp1_04 csp1_05 csp1_07 csp1_08 csp1_09 csp1_10 csp1_11 m16_cs m59_cs z3_cs01 z3_cs20 z3_cs22 z3_cs23 z3_cs27 z3_cs28 c3_cs99
+m2 m13 m14 m28 m33
+r1 r1_ll r2 r2_ll r3 r3_ll r4 r4_ll r6 r6_ll r7 r7_ll r9 r9_ll
+m40 m64
+mainmenu kartmenu mopoke shop1 shop2 shop3 b36 garage1 race_win
+a1_cavern a4 a5 cr1 c4 m1 m4 m6 m12 m20 m46 m47 m59 m88 z1 z2 beach cave sewer
+z4_4b
+a1 a2 a3 b3 m16 m37 m38 m39 m52 m87 z3 z3_2 z3_4 z3_5 z3_6
+m41 m42 m49 z4
