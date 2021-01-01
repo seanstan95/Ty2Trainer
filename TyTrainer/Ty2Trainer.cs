@@ -1,8 +1,10 @@
-﻿using System;
-using System.Threading;
-using System.ComponentModel;
-using System.Windows.Forms;
+﻿using System.Configuration;
+using System.Collections.Specialized;
 using Memory;
+using System;
+using System.ComponentModel;
+using System.Threading;
+using System.Windows.Forms;
 using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
@@ -36,10 +38,11 @@ namespace TyTrainer
         //stores pairs of Character State -> UI Text
         readonly Dictionary<int, string> stateStrings = new Dictionary<int, string>();
 
-        //logging related variables
+        //logging and application settings from config.ini
         StreamWriter logWriter = null;
-        bool verbose = true; //whether to detail everything or just important events
+        bool verboseLogging; //whether to detail everything or just important events
         bool loggedStartup = false; //whether the startup is done or not
+        int updateTime; //how often to do the main loop of the program (lower for less CPU usage)
 
         public Ty2Trainer()
         {
@@ -67,8 +70,15 @@ namespace TyTrainer
 
         private void ReadFiles()
         {
+            //load App Settings
+            Log("Loading App.config settings...", "SETUP", true);
+            updateTime = int.Parse(ConfigurationManager.AppSettings.Get("UpdateTime"));
+            Log("updateTime set to " + updateTime + ".", "SETUP", false);
+            verboseLogging = bool.Parse(ConfigurationManager.AppSettings.Get("VerboseLogging"));
+            Log("verbose set to " + verboseLogging + ".", "SETUP", false);
+
             //pointers.txt contains each pointer's type, name, and address
-            Log("Reading files...", "SETUP", false);
+            Log("Loading resource files...", "SETUP", false);
             Log("Reading pointers.txt.", "SETUP", true);
             string[] lines = GetLines("pointers.txt");
             foreach (string line in lines)
@@ -147,7 +157,8 @@ namespace TyTrainer
                     mode = "Closed";
                     if (LabelCurrentArea.Text != "Current Area: Game Closed!")
                         LabelCurrentArea.Invoke(new Action(() => LabelCurrentArea.Text = "Current Area: Game Closed!"));
-                    UpdateUI(mainPanels.Find(panel => panel.Name == "MainPanel" + mode));
+                    if(mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 0).Name != "MainPanelClosed")
+                        UpdateUI(mainPanels.Find(panel => panel.Name == "MainPanel" + mode));
                     Thread.Sleep(5000);
                     continue;
                 }
@@ -170,7 +181,7 @@ namespace TyTrainer
                     UpdateLabels(mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 0));
 
                 worker.ReportProgress(0); //report progress to update closed/open status
-                Thread.Sleep(25); //sleep for 25ms
+                Thread.Sleep(updateTime);
             }
         }
 
@@ -392,7 +403,7 @@ namespace TyTrainer
 
         private void Log(string message, string category, bool verboseMessage)
         {
-            if(!verbose && verboseMessage) //return if this is a verbose message and verbose is off
+            if(!verboseLogging && verboseMessage) //return if this is a verbose message and verbose is off
                 return;
 
             if(logWriter == null) //set logWriter if it hasn't already been set
