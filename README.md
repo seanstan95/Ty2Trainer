@@ -2,6 +2,8 @@
 ## Setup
 There is no setup required - simply download the most recent release and run Ty2Trainer.exe. Even if Ty 2 is closed, the trainer will check every 5 seconds for the game to be open, and then begin to update regularly as you interact with the game.
 
+**v1.0.1 Update**: The v1.0.1 release of the trainer now includes 2 settings in TyTrainer.exe.config. See the config file for detail on what each one does.
+
 ## Overview
 In its current state (version 1.0), this trainer contains support for the following:
 - X/Y/Z coordinates for Ty, Bunyips, Helicopter, Kart (racing), and Shazza's Truck
