@@ -20,9 +20,13 @@ float TruckHealthVisual base+00451ED4,5C,504
 float TruckX base+00447C88,8C,35C,EC,10,30
 float TruckY base+00447C88,8C,35C,EC,10,34
 float TruckZ base+00447C88,8C,35C,EC,10,38
+int TyGroundedState base+0043EC7C,17C,4
 int TyHealth base+00107384,0
+float TyHorizSpeedCap base+0043EC7C,40,44,1F4,EC,0,38
+int TySwimmingState base+0043EC7C,64
 float TyX base+004465EC,3C,1E8,17C,444
-float TyHorizSpeed base+0043EC7C,40,44,1F4,EC,0,38
+float TyXSpeed base+0043EC7C,57C
 float TyY base+004465EC,3C,1E8,17C,448
 float TyYSpeed base+004465EC,3C,238,4,580
 float TyZ base+004465EC,3C,1E8,17C,44C
+float TyZSpeed base+0043EC7C,584

@@ -20,9 +20,13 @@ Truck Health (Visual):
 Truck X: 
 Truck Y: 
 Truck Z: 
+Ty Grounded State: 
 Ty Health: 
-Ty X: 
 Ty Horizontal Speed: 
+Ty Swimming State: 
+Ty X: 
+Ty X Speed: 
 Ty Y: 
 Ty Y Speed: 
 Ty Z: 
+Ty Z Speed: 

@@ -1,5 +1,4 @@
 ﻿using System.Configuration;
-using System.Collections.Specialized;
 using Memory;
 using System;
 using System.ComponentModel;
@@ -19,6 +18,7 @@ namespace TyTrainer
         readonly List<string> pointerTypes = new List<string>(); //stores the data type of each pointer
         readonly List<string> pointerNames = new List<string>(); //stores the name of each pointer
         readonly List<string> pointers = new List<string>(); //stores the address of each pointer
+        List<string> helpTexts = new List<string>(); //stores the help texts that appear when help buttons are clicked
         readonly List<Panel> mainPanels = new List<Panel>(); //stores all of the Top-Level panels (PanelBunyip, PanelTy, etc.)
         readonly List<CheckBox> checkBoxes = new List<CheckBox>(); //stores all of the CheckBoxes
         readonly List<TextBox> textBoxes = new List<TextBox>(); //stores all of the TextBoxes
@@ -28,6 +28,7 @@ namespace TyTrainer
         //modes determine which UI Panel to display at each moment
         readonly string[] modes = { "Bunyip", "Cutscene", "Heli", "Kart", "Sub", "Other", "Ty", "Truck", "Unknown" };
         string mode;
+        bool itemsShowing = false;
 
         //stores pairs of Address Name -> Label Text for UI
         readonly SortedDictionary<string, string> labelLookup = new SortedDictionary<string, string>();
@@ -38,6 +39,13 @@ namespace TyTrainer
         //stores pairs of Character State -> UI Text
         readonly Dictionary<int, string> stateStrings = new Dictionary<int, string>();
 
+        //stores pairs of toggleable feature names - feature text
+        readonly Dictionary<string, string> featureNames = new Dictionary<string, string>()
+        {
+            {  "TyGroundedState", "Infinite Jump" },
+            { "TySwimmingState", "Infinite Swim" }
+        };
+
         //logging and application settings from config.ini
         StreamWriter logWriter = null;
         bool verboseLogging; //whether to detail everything or just important events
@@ -46,6 +54,8 @@ namespace TyTrainer
 
         public Ty2Trainer()
         {
+            string[] noTextBoxes = { "CharacterState", "CurrentMusicTitle", "TyGroundedState", "TySwimmingState" };
+            string[] noCheckBoxes = { "CharacterState", "CurrentMusicTitle" };
             Log("Initializing Components...", "SETUP", false);
             InitializeComponent();
             LabelLastAction.Text = "";
@@ -60,10 +70,14 @@ namespace TyTrainer
             ReadFiles();
             foreach (string name in pointerNames)
             {
-                if (name == "CharacterState" || name == "CurrentMusicTitle")
-                    continue;
-                textBoxes.Add((TextBox)this.Controls.Find("Text" + name, true)[0]);
-                checkBoxes.Add((CheckBox)this.Controls.Find("Check" + name, true)[0]);
+                if(Array.IndexOf(noCheckBoxes, name) == -1)
+                {
+                    checkBoxes.Add((CheckBox)this.Controls.Find("Check" + name, true)[0]);
+                }
+                if (Array.IndexOf(noTextBoxes, name) == -1)
+                {
+                    textBoxes.Add((TextBox)this.Controls.Find("Text" + name, true)[0]);
+                }
             }
             Log("Trainer initialized.", "SETUP", false);
         }
@@ -122,11 +136,15 @@ namespace TyTrainer
             //stateStrings stores UI text for each character state
             Log("Reading state_strings.txt.", "SETUP", true);
             lines = GetLines("state_strings.txt");
-            foreach(string line in lines)
+            foreach (string line in lines)
             {
                 string[] split = line.Split(' ');
                 stateStrings.Add(int.Parse(split[0]), split[1].Replace('_', ' '));
             }
+
+            //helpTexts stores help texts for help buttons
+            Log("Reading help_texts.txt.", "SETUP", true);
+            helpTexts = new List<string>(GetLines("help_texts.txt"));
         }
 
         private string[] GetLines(string file)
@@ -156,13 +174,13 @@ namespace TyTrainer
                     worker.ReportProgress(0);
                     mode = "Closed";
                     if (LabelCurrentArea.Text != "Current Area: Game Closed!")
-                        LabelCurrentArea.Invoke(new Action(() => LabelCurrentArea.Text = "Current Area: Game Closed!"));
-                    if(mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 0).Name != "MainPanelClosed")
+                        Invoke(new Action(() => LabelCurrentArea.Text = "Current Area: Game Closed!"));
+                    if (mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 0).Name != "MainPanelClosed")
                         UpdateUI(mainPanels.Find(panel => panel.Name == "MainPanel" + mode));
                     Thread.Sleep(5000);
                     continue;
                 }
-                else if(processOpen && !loggedStartup)
+                else if (processOpen && !loggedStartup)
                 {
                     Log("Ty2.exe opened.", "GAME", false);
                     loggedStartup = true;
@@ -177,7 +195,7 @@ namespace TyTrainer
                     UpdateUI(mainPanels.Find(panel => panel.Name == "MainPanel" + mode));
 
                 //if necessary, update label texts
-                if(mode != "Cutscene" && mode != "Other" && mode != "Unknown")
+                if (mode != "Cutscene" && mode != "Other" && mode != "Unknown" && !itemsShowing)
                     UpdateLabels(mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 0));
 
                 worker.ReportProgress(0); //report progress to update closed/open status
@@ -187,19 +205,22 @@ namespace TyTrainer
 
         private bool GetMode()
         {
+            if (itemsShowing)
+                return false; //leave immediately if items window is showing currently
+
             string oldMusic = currentMusicTitle;
             string oldMode = mode; //store current mode to determine if mode was changed
-            if(memory.ReadString(GetPointer("CurrentMusicTitle")) != "missionsucceed")
+            if (memory.ReadString(GetPointer("CurrentMusicTitle")) != "missionsucceed")
                 currentMusicTitle = memory.ReadString(GetPointer("CurrentMusicTitle")).ToLower(); //grab current music title
             bool found = false; //tracks if current music title has been found in an array or not
 
             for (int i = 0; i < musicTitles.Count; ++i)
             {
-                if(musicTitles[i].IndexOf(currentMusicTitle) != -1)
+                if (musicTitles[i].IndexOf(currentMusicTitle) != -1)
                 {
-                    if(i == 8) //TyBunyip case
+                    if (i == 8) //TyBunyip case
                         mode = memory.ReadInt(GetPointer("CharacterState")) == 0 ? "Ty" : "Bunyip";
-                    else if(i == 9) //TyTruck case
+                    else if (i == 9) //TyTruck case
                         mode = memory.ReadInt(GetPointer("CharacterState")) == 0 ? "Ty" : "Truck";
                     else
                         mode = modes[i];
@@ -211,7 +232,7 @@ namespace TyTrainer
             if (!found)
                 mode = "Unknown"; //if not otherwise found, assume Unknown
 
-            if(oldMode != mode)
+            if (oldMode != mode)
                 Log("Mode changed from " + oldMode + " to " + mode + ".", "GAME", true);
 
             if (oldMusic != currentMusicTitle && oldMusic != "" && currentMusicTitle != "")
@@ -228,8 +249,8 @@ namespace TyTrainer
             else
                 text = "Unknown";
 
-            if(LabelCurrentArea.Text != "Current Area: " + text)
-                LabelCurrentArea.Invoke(new Action(() => LabelCurrentArea.Text = "Current Area: " + text));
+            if (LabelCurrentArea.Text != "Current Area: " + text)
+                Invoke(new Action(() => LabelCurrentArea.Text = "Current Area: " + text));
         }
 
         private void UpdateState()
@@ -237,10 +258,10 @@ namespace TyTrainer
             string state = stateStrings[memory.ReadInt(GetPointer("CharacterState"))];
             string currentState = LabelCharacterState.Text.Substring(17);
             string text = "Character State: " + state;
-            if(LabelCharacterState.Text != text)
+            if (LabelCharacterState.Text != text)
             {
                 Log("Character State changed from " + currentState + " to " + state + ".", "GAME", true);
-                LabelCharacterState.Invoke(new Action(() => LabelCharacterState.Text = text));
+                Invoke(new Action(() => LabelCharacterState.Text = text));
             }
         }
 
@@ -248,29 +269,35 @@ namespace TyTrainer
         {
             //remove text/undo checks before switching, to avoid issues
             Panel inFront = mainPanels.Find(front => front.Parent.Controls.GetChildIndex(front) == 0);
-            foreach(CheckBox check in checkBoxes.FindAll(chk => chk.Name.Contains(inFront.Name.Substring(9))))
+            foreach (CheckBox check in checkBoxes.FindAll(chk => chk.Name.Contains(inFront.Name.Substring(9))))
             {
                 if (check.Checked)
                 {
                     string name = pointerNames[pointers.IndexOf(GetPointer(check.Name.Substring(5)))];
                     Log("Unfreezing " + name + ".", "FREEZE", false);
-                    check.Invoke(new Action(() => check.Checked = false));
+                    Invoke(new Action(() => check.Checked = false));
                     memory.UnfreezeValue(GetPointer(check.Name.Substring(5)));
                 }
             }
             foreach (TextBox text in textBoxes.FindAll(txt => txt.Name.Contains(inFront.Name.Substring(9))))
-                text.Invoke(new Action(() => text.Text = ""));
+                Invoke(new Action(() => text.Text = ""));
             Log("Bringing " + panel.Name + " to front.", "UI", false);
-            panel.Invoke(new Action(() => panel.BringToFront())); //bring current mode's panel to front
+            Invoke(new Action(() => panel.BringToFront())); //bring current mode's panel to front
             if (LabelLastAction.Text != "")
-                LabelLastAction.Invoke(new Action(() => LabelLastAction.Text = ""));
+                Invoke(new Action(() => SetLastAction(Color.Green, "")));
+        }
+
+        private void SetLastAction(Color color, string text)
+        {
+            LabelLastAction.ForeColor = color;
+            LabelLastAction.Text = text;
         }
 
         private void UpdateLabels(Panel panel)
         {
             //convert currentPanel's name and find its respective Label Panel
             Panel labels = (Panel)panel.Controls.Find(panel.Name.Substring(4) + "Label", false)[0];
-            
+
             foreach (Label label in labels.Controls)
             {
                 List<string> keys = new List<string>(labelLookup.Keys);
@@ -282,19 +309,19 @@ namespace TyTrainer
                         if (valueType == "float")
                         {
                             float value = memory.ReadFloat(GetPointer(key));
-                            label.Invoke(new Action(() => label.Text = labelLookup[key] + value));
+                            Invoke(new Action(() => label.Text = labelLookup[key] + value));
                             break;
                         }
                         else if (valueType == "uint")
                         {
                             uint value = memory.ReadUInt(GetPointer(key));
-                            label.Invoke(new Action(() => label.Text = labelLookup[key] + value));
+                            Invoke(new Action(() => label.Text = labelLookup[key] + value));
                             break;
                         }
-                        else if(valueType == "int")
+                        else if (valueType == "int")
                         {
                             int value = memory.ReadInt(GetPointer(key));
-                            label.Invoke(new Action(() => label.Text = labelLookup[key] + value));
+                            Invoke(new Action(() => label.Text = labelLookup[key] + value));
                             break;
                         }
                     }
@@ -321,7 +348,7 @@ namespace TyTrainer
                         value = memory.ReadUInt(GetPointer(pointerName)).ToString();
                     Log("Empty text box - freezing current value (" + value + ") to " + pointerName + ".", "FREEZE", false);
                     memory.FreezeValue(GetPointer(pointerName), type, value);
-                    LabelLastAction.Invoke(new Action(() => LabelLastAction.Text = "Froze " + value + " to " + pointerName + "."));
+                    Invoke(new Action(() => SetLastAction(Color.Green, "Froze " + value + " to " + pointerName + ".")));
                 }
                 else
                 {
@@ -335,13 +362,13 @@ namespace TyTrainer
                     {
                         Log("Freezing value " + value + " to " + pointerName + ".", "FREEZE", false);
                         memory.FreezeValue(GetPointer(pointerName), type, textBox.Text);
-                        LabelLastAction.Invoke(new Action(() => LabelLastAction.Text = "Froze " + value + " to " + pointerName + "."));
+                        Invoke(new Action(() => SetLastAction(Color.Green, "Froze " + value + " to " + pointerName + ".")));
                     }
                     else
                     {
                         Log("Error freezing value " + value + " to " + pointerName + " - wrong type!", "WARNING", false);
-                        LabelLastAction.Invoke(new Action(() => LabelLastAction.Text = "Can't freeze " + value + " to " + pointerName + " - wrong type!"));
-                        checkBox.Invoke(new Action(() => checkBox.Checked = false));
+                        Invoke(new Action(() => SetLastAction(Color.Red, "Can't freeze " + value + " to " + pointerName + " - wrong type!")));
+                        Invoke(new Action(() => checkBox.Checked = false));
                     }
                 }
             }
@@ -349,7 +376,7 @@ namespace TyTrainer
             {
                 Log("Unfreezing " + pointerName, "FREEZE", false);
                 memory.UnfreezeValue(GetPointer(pointerName));
-                LabelLastAction.Invoke(new Action(() => LabelLastAction.Text = "Unfroze " + pointerName + "."));
+                Invoke(new Action(() => SetLastAction(Color.Green, "Unfroze " + pointerName + ".")));
             }
         }
 
@@ -357,22 +384,22 @@ namespace TyTrainer
         {
             string name = ((Button)sender).Name.Substring(6);
             string value = textBoxes.Find(boxName => boxName.Name == "Text" + name).Text;
-            if(value == "")
+            if (value == "")
             {
                 Log("Error setting value - empty text box!", "WARNING", false);
-                LabelLastAction.Invoke(new Action(() => LabelLastAction.Text = "Can't set value - need a value in the text box!"));
+                Invoke(new Action(() => SetLastAction(Color.Red, "Can't set value - need a value in the text box!")));
                 return;
             }
             try
             {
                 Log("Writing " + value + " to " + name + ".", "SET VALUE", false);
                 memory.WriteMemory(GetPointer(name), pointerTypes[pointerNames.IndexOf(name)], value);
-                LabelLastAction.Invoke(new Action(() => LabelLastAction.Text = "Set " + name + " to " + value + "."));
+                Invoke(new Action(() => SetLastAction(Color.Green, "Set " + name + " to " + value + ".")));
             }
-            catch(FormatException)
+            catch (FormatException)
             {
                 Log("Error writing " + value + " to " + name + " - wrong type!", "WARNING", false);
-                LabelLastAction.Invoke(new Action(() => LabelLastAction.Text = "Can't set value - wrong type!"));
+                Invoke(new Action(() => SetLastAction(Color.Red, "Can't set value - wrong type!")));
             }
         }
 
@@ -403,15 +430,81 @@ namespace TyTrainer
 
         private void Log(string message, string category, bool verboseMessage)
         {
-            if(!verboseLogging && verboseMessage) //return if this is a verbose message and verbose is off
+            if (!verboseLogging && verboseMessage) //return if this is a verbose message and verbose is off
                 return;
 
-            if(logWriter == null) //set logWriter if it hasn't already been set
+            if (logWriter == null) //set logWriter if it hasn't already been set
                 logWriter = new StreamWriter("log.txt");
 
             string timestamp = DateTime.Now.ToString("[HH:mm:ss] ");
             logWriter.WriteLine(timestamp + category + ": " + message);
             logWriter.Flush();
+        }
+
+        private void OpenHelp(object sender, EventArgs e)
+        {
+            if (((Button)sender).Name == "HelpDisplayItems")
+            {
+                Form helpWindow = new HelpWindow("Item Display", "int", helpTexts[helpTexts.Count - 1]);
+                helpWindow.Show();
+                Log("Help button for Item Display was triggered.", "HELP", false);
+            }
+            else if (((Button)sender).Name == "HelpInfiniteJump")
+            {
+                Form helpWindow = new HelpWindow("TyGroundedState (Infinite Jump)", "int/boolean", helpTexts[pointerNames.IndexOf("TyGroundedState")]);
+                helpWindow.StartPosition = this.StartPosition;
+                helpWindow.Show();
+                Log("Help button for Infinite Jump was triggered.", "HELP", false);
+            }
+            else
+            {
+                int index = pointerNames.IndexOf(((Button)sender).Name.Substring(4)); //this looks so ugly
+                Form helpWindow = new HelpWindow(pointerNames[index], pointerTypes[index], helpTexts[index]);
+                helpWindow.StartPosition = this.StartPosition;
+                helpWindow.Show();
+                Log("Help button for " + pointerNames[index] + " was triggered.", "HELP", false);
+            }
+        }
+
+        private void ShowItemTotals(object sender, EventArgs e)
+        {
+            if (!processOpen)
+            {
+                Log("Can't display the item totals if the game is closed! Open the game and try again.", "WARNING", false);
+                Invoke(new Action(() => SetLastAction(Color.Red, "Can't display item totals when the game is closed!")));
+                ((CheckBox)sender).Checked = false;
+            }
+            else if (((CheckBox)sender).Checked)
+            {
+                itemsShowing = true;
+                MainPanelItems.BringToFront();
+            }
+            else
+            {
+                itemsShowing = false;
+                mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 1).BringToFront();
+            }
+        }
+
+        private void ToggleFeature(object sender, EventArgs e)
+        {
+            CheckBox check = (CheckBox)sender;
+            string pointerName = check.Name.Substring(5);
+            if (check.Checked)
+            {
+                Log(featureNames[pointerName] + " activated.", "FREEZE", false);
+                if (pointerName == "TyGroundedState")
+                    memory.FreezeValue(GetPointer(pointerName), "int", "1");
+                else if (pointerName == "TySwimmingState")
+                    memory.FreezeValue(GetPointer(pointerName), "int", "0");
+                Invoke(new Action(() => SetLastAction(Color.Green, "Activated " + featureNames[pointerName] + ".")));
+            }
+            else
+            {
+                Log(featureNames[pointerName] + " deactivated.", "FREEZE", false);
+                memory.UnfreezeValue(GetPointer(pointerName));
+                Invoke(new Action(() => SetLastAction(Color.Green, "Deactivated " + featureNames[pointerName] + ".")));
+            }
         }
     }
 }
