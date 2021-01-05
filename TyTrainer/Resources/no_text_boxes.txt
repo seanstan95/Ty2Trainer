@@ -1,12 +1,12 @@
-Bilby (Bottom): 
-Bilby (Top): 
+Bilby Total (Bottom): 
+Bilby Total (Top): 
 Bunyip Health (Visual): 
 Bunyip X: 
 Bunyip Y: 
 Bunyip Z: 
 Character State: 
-Cogs (Bottom): 
-Cogs (Top): 
+Cogs Total (Bottom): 
+Cogs Total (Top): 
 Current Music Title: 
 Heli Health (Visual): 
 Heli X: 
@@ -15,14 +15,14 @@ Heli Z:
 Kart X: 
 Kart Y: 
 Kart Z: 
-Orbs (Bottom): 
-Orbs (Top): 
-Photos (Bottom): 
-Photos (Top): 
-Spies (Bottom): 
-Spies (Top): 
-Steve (Bottom): 
-Steve (Top): 
+Orbs Total (Bottom): 
+Orbs Total (Top): 
+Photos Total (Bottom): 
+Photos Total (Top): 
+Spies Total (Bottom): 
+Spies Total (Top): 
+Steve Total (Bottom): 
+Steve Total (Top): 
 Sub Health (Visual): 
 Sub X: 
 Sub Y: 

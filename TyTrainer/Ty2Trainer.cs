@@ -21,6 +21,7 @@ namespace TyTrainer
         List<string> helpTexts = new List<string>(); //stores the help texts that appear when help buttons are clicked
         readonly List<Panel> mainPanels = new List<Panel>(); //stores all of the Top-Level panels (PanelBunyip, PanelTy, etc.)
         readonly List<CheckBox> checkBoxes = new List<CheckBox>(); //stores all of the CheckBoxes
+        readonly List<string> noCheckBoxes = new List<string>(); //stores list of values that don't have checkboxes associated with them (simplifies logic later)
         readonly List<TextBox> textBoxes = new List<TextBox>(); //stores all of the TextBoxes
         readonly List<List<string>> musicTitles = new List<List<string>>(); //stores in-game music titles ordered by category
         string currentMusicTitle = ""; //tracks the currently playing music, used to know where in the game the player is
@@ -55,7 +56,6 @@ namespace TyTrainer
         public Ty2Trainer()
         {
             string[] noTextBoxes = { "CharacterState", "CurrentMusicTitle", "TyGroundedState", "TySwimmingState" };
-            string[] noCheckBoxes = { "CharacterState", "CurrentMusicTitle" };
             Log("Initializing Components...", "SETUP", false);
             InitializeComponent();
             LabelLastAction.Text = "";
@@ -70,7 +70,7 @@ namespace TyTrainer
             ReadFiles();
             foreach (string name in pointerNames)
             {
-                if(Array.IndexOf(noCheckBoxes, name) == -1)
+                if(!noCheckBoxes.Contains(name))
                 {
                     checkBoxes.Add((CheckBox)this.Controls.Find("Check" + name, true)[0]);
                 }
@@ -101,6 +101,8 @@ namespace TyTrainer
                 pointerTypes.Add(split[0]);
                 pointerNames.Add(split[1]);
                 pointers.Add(split[2]);
+                if (split[3] == "no")
+                    noCheckBoxes.Add(split[1]);
             }
 
             //music_titles.txt contains lists of music titles in order of category
@@ -195,7 +197,7 @@ namespace TyTrainer
                     UpdateUI(mainPanels.Find(panel => panel.Name == "MainPanel" + mode));
 
                 //if necessary, update label texts
-                if (mode != "Cutscene" && mode != "Other" && mode != "Unknown" && !itemsShowing)
+                if (mode != "Cutscene" && mode != "Other" && mode != "Unknown")
                     UpdateLabels(mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 0));
 
                 worker.ReportProgress(0); //report progress to update closed/open status
@@ -295,10 +297,27 @@ namespace TyTrainer
 
         private void UpdateLabels(Panel panel)
         {
-            //convert currentPanel's name and find its respective Label Panel
-            Panel labels = (Panel)panel.Controls.Find(panel.Name.Substring(4) + "Label", false)[0];
+            List<Label> labels = new List<Label>();
+            //i hate how much work is needed for this special case but I can't be bothered to figure out a better way
+            //ultimate goal here is getting a collection of all of the labels for the current panel, for iteration
+            if (panel.Name == "MainPanelItems")
+            {
+                foreach(Control control in panel.Controls)
+                {
+                    if (control.Name.Contains("Label"))
+                        labels.Add((Label)control);
+                }
+            }
+            else
+            {
+                Panel labelPanel = (Panel)panel.Controls.Find(panel.Name.Substring(4) + "Label", true)[0];
+                foreach(Label label in labelPanel.Controls)
+                {
+                    labels.Add(label);
+                }
+            }
 
-            foreach (Label label in labels.Controls)
+            foreach (Label label in labels)
             {
                 List<string> keys = new List<string>(labelLookup.Keys);
                 foreach (string key in keys)

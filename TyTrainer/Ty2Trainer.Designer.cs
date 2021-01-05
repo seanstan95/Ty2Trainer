@@ -59,10 +59,11 @@ namespace TyTrainer
             this.TextTyXSpeed = new System.Windows.Forms.TextBox();
             this.TextTyZSpeed = new System.Windows.Forms.TextBox();
             this.MainPanelTy = new System.Windows.Forms.Panel();
-            this.CheckTySwimmingState = new System.Windows.Forms.CheckBox();
-            this.HelpTySwimmingState = new System.Windows.Forms.Button();
+            this.PanelTyFeatures = new System.Windows.Forms.Panel();
             this.HelpTyGroundedState = new System.Windows.Forms.Button();
             this.CheckTyGroundedState = new System.Windows.Forms.CheckBox();
+            this.HelpTySwimmingState = new System.Windows.Forms.Button();
+            this.CheckTySwimmingState = new System.Windows.Forms.CheckBox();
             this.PanelTyHelp = new System.Windows.Forms.Panel();
             this.HelpTyHealth = new System.Windows.Forms.Button();
             this.HelpTyHorizSpeedCap = new System.Windows.Forms.Button();
@@ -228,49 +229,52 @@ namespace TyTrainer
             this.LabelLastAction = new System.Windows.Forms.Label();
             this.CheckShowItemPanel = new System.Windows.Forms.CheckBox();
             this.MainPanelItems = new System.Windows.Forms.Panel();
-            this.LabelBilbiesTop = new System.Windows.Forms.Label();
-            this.TextBilbiesTop = new System.Windows.Forms.TextBox();
             this.ButtonBilbiesTop = new System.Windows.Forms.Button();
-            this.LabelBilbiesBottom = new System.Windows.Forms.Label();
             this.TextBilbiesBottom = new System.Windows.Forms.TextBox();
             this.ButtonBilbiesBottom = new System.Windows.Forms.Button();
-            this.LabelSpiesTop = new System.Windows.Forms.Label();
-            this.TextSpiesTop = new System.Windows.Forms.TextBox();
             this.ButtonSpiesTop = new System.Windows.Forms.Button();
-            this.LabelSpiesBottom = new System.Windows.Forms.Label();
             this.TextSpiesBottom = new System.Windows.Forms.TextBox();
             this.ButtonSpiesBottom = new System.Windows.Forms.Button();
-            this.LabelSteveTop = new System.Windows.Forms.Label();
-            this.TextSteveTop = new System.Windows.Forms.TextBox();
             this.ButtonSteveTop = new System.Windows.Forms.Button();
-            this.LabelSteveBottom = new System.Windows.Forms.Label();
-            this.TextSeveBottom = new System.Windows.Forms.TextBox();
+            this.TextSteveBottom = new System.Windows.Forms.TextBox();
             this.ButtonSteveBottom = new System.Windows.Forms.Button();
-            this.LabelPhotosTop = new System.Windows.Forms.Label();
-            this.TextPhotosTop = new System.Windows.Forms.TextBox();
             this.ButtonPhotosTop = new System.Windows.Forms.Button();
-            this.LabelPhotosBottom = new System.Windows.Forms.Label();
             this.TextPhotosBottom = new System.Windows.Forms.TextBox();
             this.ButtonPhotosBottom = new System.Windows.Forms.Button();
-            this.LabelCogsTop = new System.Windows.Forms.Label();
-            this.TextCogsTop = new System.Windows.Forms.TextBox();
             this.ButtonCogsTop = new System.Windows.Forms.Button();
-            this.LabelCogsBottom = new System.Windows.Forms.Label();
             this.TextCogsBottom = new System.Windows.Forms.TextBox();
             this.ButtonCogsBottom = new System.Windows.Forms.Button();
-            this.LabelOrbsTop = new System.Windows.Forms.Label();
-            this.TextOrbsTop = new System.Windows.Forms.TextBox();
             this.ButtonOrbsTop = new System.Windows.Forms.Button();
-            this.LabelOrbsBottom = new System.Windows.Forms.Label();
             this.TextOrbsBottom = new System.Windows.Forms.TextBox();
             this.ButtonOrbsBottom = new System.Windows.Forms.Button();
             this.HelpCharacterState = new System.Windows.Forms.Button();
             this.HelpDisplayItems = new System.Windows.Forms.Button();
-            this.PanelTyFeatures = new System.Windows.Forms.Panel();
+            this.PanelItemsText2 = new System.Windows.Forms.Panel();
+            this.PanelItemsButton = new System.Windows.Forms.Panel();
+            this.PanelItemsText1 = new System.Windows.Forms.Panel();
+            this.TextBilbiesTop = new System.Windows.Forms.TextBox();
+            this.TextSpiesTop = new System.Windows.Forms.TextBox();
+            this.TextSteveTop = new System.Windows.Forms.TextBox();
+            this.TextPhotosTop = new System.Windows.Forms.TextBox();
+            this.TextCogsTop = new System.Windows.Forms.TextBox();
+            this.TextOrbsTop = new System.Windows.Forms.TextBox();
+            this.LabelBilbiesTop = new System.Windows.Forms.Label();
+            this.LabelSpiesTop = new System.Windows.Forms.Label();
+            this.LabelSteveTop = new System.Windows.Forms.Label();
+            this.LabelPhotosTop = new System.Windows.Forms.Label();
+            this.LabelCogsTop = new System.Windows.Forms.Label();
+            this.LabelOrbsTop = new System.Windows.Forms.Label();
+            this.LabelBilbiesBottom = new System.Windows.Forms.Label();
+            this.LabelSpiesBottom = new System.Windows.Forms.Label();
+            this.LabelSteveBottom = new System.Windows.Forms.Label();
+            this.LabelPhotosBottom = new System.Windows.Forms.Label();
+            this.LabelCogsBottom = new System.Windows.Forms.Label();
+            this.LabelOrbsBottom = new System.Windows.Forms.Label();
             this.PanelTyLabel.SuspendLayout();
             this.PanelTyCheck.SuspendLayout();
             this.PanelTyText.SuspendLayout();
             this.MainPanelTy.SuspendLayout();
+            this.PanelTyFeatures.SuspendLayout();
             this.PanelTyHelp.SuspendLayout();
             this.PanelTyButton.SuspendLayout();
             this.MainPanelTruck.SuspendLayout();
@@ -308,7 +312,9 @@ namespace TyTrainer
             this.PanelSubButton.SuspendLayout();
             this.PanelSubCheck.SuspendLayout();
             this.MainPanelItems.SuspendLayout();
-            this.PanelTyFeatures.SuspendLayout();
+            this.PanelItemsText2.SuspendLayout();
+            this.PanelItemsButton.SuspendLayout();
+            this.PanelItemsText1.SuspendLayout();
             this.SuspendLayout();
             // 
             // worker
@@ -622,27 +628,16 @@ namespace TyTrainer
             this.MainPanelTy.Size = new System.Drawing.Size(605, 222);
             this.MainPanelTy.TabIndex = 17;
             // 
-            // CheckTySwimmingState
+            // PanelTyFeatures
             // 
-            this.CheckTySwimmingState.AutoSize = true;
-            this.CheckTySwimmingState.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckTySwimmingState.Location = new System.Drawing.Point(375, 2);
-            this.CheckTySwimmingState.Name = "CheckTySwimmingState";
-            this.CheckTySwimmingState.Size = new System.Drawing.Size(129, 26);
-            this.CheckTySwimmingState.TabIndex = 26;
-            this.CheckTySwimmingState.Text = "Infinite Swim";
-            this.CheckTySwimmingState.UseVisualStyleBackColor = true;
-            this.CheckTySwimmingState.Click += new System.EventHandler(this.ToggleFeature);
-            // 
-            // HelpTySwimmingState
-            // 
-            this.HelpTySwimmingState.Location = new System.Drawing.Point(350, 2);
-            this.HelpTySwimmingState.Name = "HelpTySwimmingState";
-            this.HelpTySwimmingState.Size = new System.Drawing.Size(20, 23);
-            this.HelpTySwimmingState.TabIndex = 25;
-            this.HelpTySwimmingState.Text = "?";
-            this.HelpTySwimmingState.UseVisualStyleBackColor = true;
-            this.HelpTySwimmingState.Click += new System.EventHandler(this.OpenHelp);
+            this.PanelTyFeatures.Controls.Add(this.HelpTyGroundedState);
+            this.PanelTyFeatures.Controls.Add(this.CheckTyGroundedState);
+            this.PanelTyFeatures.Controls.Add(this.HelpTySwimmingState);
+            this.PanelTyFeatures.Controls.Add(this.CheckTySwimmingState);
+            this.PanelTyFeatures.Location = new System.Drawing.Point(0, 0);
+            this.PanelTyFeatures.Name = "PanelTyFeatures";
+            this.PanelTyFeatures.Size = new System.Drawing.Size(585, 30);
+            this.PanelTyFeatures.TabIndex = 27;
             // 
             // HelpTyGroundedState
             // 
@@ -665,6 +660,28 @@ namespace TyTrainer
             this.CheckTyGroundedState.Text = "Infinite Jump";
             this.CheckTyGroundedState.UseVisualStyleBackColor = true;
             this.CheckTyGroundedState.Click += new System.EventHandler(this.ToggleFeature);
+            // 
+            // HelpTySwimmingState
+            // 
+            this.HelpTySwimmingState.Location = new System.Drawing.Point(350, 2);
+            this.HelpTySwimmingState.Name = "HelpTySwimmingState";
+            this.HelpTySwimmingState.Size = new System.Drawing.Size(20, 23);
+            this.HelpTySwimmingState.TabIndex = 25;
+            this.HelpTySwimmingState.Text = "?";
+            this.HelpTySwimmingState.UseVisualStyleBackColor = true;
+            this.HelpTySwimmingState.Click += new System.EventHandler(this.OpenHelp);
+            // 
+            // CheckTySwimmingState
+            // 
+            this.CheckTySwimmingState.AutoSize = true;
+            this.CheckTySwimmingState.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckTySwimmingState.Location = new System.Drawing.Point(375, 2);
+            this.CheckTySwimmingState.Name = "CheckTySwimmingState";
+            this.CheckTySwimmingState.Size = new System.Drawing.Size(129, 26);
+            this.CheckTySwimmingState.TabIndex = 26;
+            this.CheckTySwimmingState.Text = "Infinite Swim";
+            this.CheckTySwimmingState.UseVisualStyleBackColor = true;
+            this.CheckTySwimmingState.Click += new System.EventHandler(this.ToggleFeature);
             // 
             // PanelTyHelp
             // 
@@ -2344,63 +2361,24 @@ namespace TyTrainer
             // 
             this.MainPanelItems.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MainPanelItems.Controls.Add(this.LabelBilbiesTop);
-            this.MainPanelItems.Controls.Add(this.TextBilbiesTop);
-            this.MainPanelItems.Controls.Add(this.ButtonBilbiesTop);
-            this.MainPanelItems.Controls.Add(this.LabelBilbiesBottom);
-            this.MainPanelItems.Controls.Add(this.TextBilbiesBottom);
-            this.MainPanelItems.Controls.Add(this.ButtonBilbiesBottom);
             this.MainPanelItems.Controls.Add(this.LabelSpiesTop);
-            this.MainPanelItems.Controls.Add(this.TextSpiesTop);
-            this.MainPanelItems.Controls.Add(this.ButtonSpiesTop);
-            this.MainPanelItems.Controls.Add(this.LabelSpiesBottom);
-            this.MainPanelItems.Controls.Add(this.TextSpiesBottom);
-            this.MainPanelItems.Controls.Add(this.ButtonSpiesBottom);
             this.MainPanelItems.Controls.Add(this.LabelSteveTop);
-            this.MainPanelItems.Controls.Add(this.TextSteveTop);
-            this.MainPanelItems.Controls.Add(this.ButtonSteveTop);
-            this.MainPanelItems.Controls.Add(this.LabelSteveBottom);
-            this.MainPanelItems.Controls.Add(this.TextSeveBottom);
-            this.MainPanelItems.Controls.Add(this.ButtonSteveBottom);
             this.MainPanelItems.Controls.Add(this.LabelPhotosTop);
-            this.MainPanelItems.Controls.Add(this.TextPhotosTop);
-            this.MainPanelItems.Controls.Add(this.ButtonPhotosTop);
-            this.MainPanelItems.Controls.Add(this.LabelPhotosBottom);
-            this.MainPanelItems.Controls.Add(this.TextPhotosBottom);
-            this.MainPanelItems.Controls.Add(this.ButtonPhotosBottom);
             this.MainPanelItems.Controls.Add(this.LabelCogsTop);
-            this.MainPanelItems.Controls.Add(this.TextCogsTop);
-            this.MainPanelItems.Controls.Add(this.ButtonCogsTop);
-            this.MainPanelItems.Controls.Add(this.LabelCogsBottom);
-            this.MainPanelItems.Controls.Add(this.TextCogsBottom);
-            this.MainPanelItems.Controls.Add(this.ButtonCogsBottom);
             this.MainPanelItems.Controls.Add(this.LabelOrbsTop);
-            this.MainPanelItems.Controls.Add(this.TextOrbsTop);
-            this.MainPanelItems.Controls.Add(this.ButtonOrbsTop);
+            this.MainPanelItems.Controls.Add(this.LabelBilbiesBottom);
+            this.MainPanelItems.Controls.Add(this.LabelSpiesBottom);
+            this.MainPanelItems.Controls.Add(this.LabelSteveBottom);
+            this.MainPanelItems.Controls.Add(this.LabelPhotosBottom);
+            this.MainPanelItems.Controls.Add(this.LabelCogsBottom);
             this.MainPanelItems.Controls.Add(this.LabelOrbsBottom);
-            this.MainPanelItems.Controls.Add(this.TextOrbsBottom);
-            this.MainPanelItems.Controls.Add(this.ButtonOrbsBottom);
+            this.MainPanelItems.Controls.Add(this.PanelItemsText1);
+            this.MainPanelItems.Controls.Add(this.PanelItemsText2);
+            this.MainPanelItems.Controls.Add(this.PanelItemsButton);
             this.MainPanelItems.Location = new System.Drawing.Point(19, 72);
             this.MainPanelItems.Name = "MainPanelItems";
             this.MainPanelItems.Size = new System.Drawing.Size(605, 222);
             this.MainPanelItems.TabIndex = 31;
-            // 
-            // LabelBilbiesTop
-            // 
-            this.LabelBilbiesTop.AutoEllipsis = true;
-            this.LabelBilbiesTop.AutoSize = true;
-            this.LabelBilbiesTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelBilbiesTop.Location = new System.Drawing.Point(0, 10);
-            this.LabelBilbiesTop.Name = "LabelBilbiesTop";
-            this.LabelBilbiesTop.Size = new System.Drawing.Size(178, 25);
-            this.LabelBilbiesTop.TabIndex = 0;
-            this.LabelBilbiesTop.Text = "Bilbies (Top): 5000";
-            // 
-            // TextBilbiesTop
-            // 
-            this.TextBilbiesTop.Location = new System.Drawing.Point(185, 10);
-            this.TextBilbiesTop.Name = "TextBilbiesTop";
-            this.TextBilbiesTop.Size = new System.Drawing.Size(50, 20);
-            this.TextBilbiesTop.TabIndex = 12;
             // 
             // ButtonBilbiesTop
             // 
@@ -2412,19 +2390,9 @@ namespace TyTrainer
             this.ButtonBilbiesTop.UseVisualStyleBackColor = true;
             this.ButtonBilbiesTop.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelBilbiesBottom
-            // 
-            this.LabelBilbiesBottom.AutoSize = true;
-            this.LabelBilbiesBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelBilbiesBottom.Location = new System.Drawing.Point(290, 10);
-            this.LabelBilbiesBottom.Name = "LabelBilbiesBottom";
-            this.LabelBilbiesBottom.Size = new System.Drawing.Size(204, 25);
-            this.LabelBilbiesBottom.TabIndex = 1;
-            this.LabelBilbiesBottom.Text = "Bilbies (Bottom): 5000";
-            // 
             // TextBilbiesBottom
             // 
-            this.TextBilbiesBottom.Location = new System.Drawing.Point(495, 10);
+            this.TextBilbiesBottom.Location = new System.Drawing.Point(0, 10);
             this.TextBilbiesBottom.Name = "TextBilbiesBottom";
             this.TextBilbiesBottom.Size = new System.Drawing.Size(50, 20);
             this.TextBilbiesBottom.TabIndex = 24;
@@ -2439,23 +2407,6 @@ namespace TyTrainer
             this.ButtonBilbiesBottom.UseVisualStyleBackColor = true;
             this.ButtonBilbiesBottom.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelSpiesTop
-            // 
-            this.LabelSpiesTop.AutoSize = true;
-            this.LabelSpiesTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelSpiesTop.Location = new System.Drawing.Point(0, 45);
-            this.LabelSpiesTop.Name = "LabelSpiesTop";
-            this.LabelSpiesTop.Size = new System.Drawing.Size(149, 25);
-            this.LabelSpiesTop.TabIndex = 2;
-            this.LabelSpiesTop.Text = "Spies (Top): 25";
-            // 
-            // TextSpiesTop
-            // 
-            this.TextSpiesTop.Location = new System.Drawing.Point(185, 45);
-            this.TextSpiesTop.Name = "TextSpiesTop";
-            this.TextSpiesTop.Size = new System.Drawing.Size(50, 20);
-            this.TextSpiesTop.TabIndex = 14;
-            // 
             // ButtonSpiesTop
             // 
             this.ButtonSpiesTop.Location = new System.Drawing.Point(240, 45);
@@ -2466,19 +2417,9 @@ namespace TyTrainer
             this.ButtonSpiesTop.UseVisualStyleBackColor = true;
             this.ButtonSpiesTop.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelSpiesBottom
-            // 
-            this.LabelSpiesBottom.AutoSize = true;
-            this.LabelSpiesBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelSpiesBottom.Location = new System.Drawing.Point(290, 45);
-            this.LabelSpiesBottom.Name = "LabelSpiesBottom";
-            this.LabelSpiesBottom.Size = new System.Drawing.Size(175, 25);
-            this.LabelSpiesBottom.TabIndex = 3;
-            this.LabelSpiesBottom.Text = "Spies (Bottom): 25";
-            // 
             // TextSpiesBottom
             // 
-            this.TextSpiesBottom.Location = new System.Drawing.Point(495, 45);
+            this.TextSpiesBottom.Location = new System.Drawing.Point(0, 45);
             this.TextSpiesBottom.Name = "TextSpiesBottom";
             this.TextSpiesBottom.Size = new System.Drawing.Size(50, 20);
             this.TextSpiesBottom.TabIndex = 26;
@@ -2493,23 +2434,6 @@ namespace TyTrainer
             this.ButtonSpiesBottom.UseVisualStyleBackColor = true;
             this.ButtonSpiesBottom.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelSteveTop
-            // 
-            this.LabelSteveTop.AutoSize = true;
-            this.LabelSteveTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelSteveTop.Location = new System.Drawing.Point(0, 80);
-            this.LabelSteveTop.Name = "LabelSteveTop";
-            this.LabelSteveTop.Size = new System.Drawing.Size(150, 25);
-            this.LabelSteveTop.TabIndex = 4;
-            this.LabelSteveTop.Text = "Steve (Top): 10";
-            // 
-            // TextSteveTop
-            // 
-            this.TextSteveTop.Location = new System.Drawing.Point(185, 80);
-            this.TextSteveTop.Name = "TextSteveTop";
-            this.TextSteveTop.Size = new System.Drawing.Size(50, 20);
-            this.TextSteveTop.TabIndex = 15;
-            // 
             // ButtonSteveTop
             // 
             this.ButtonSteveTop.Location = new System.Drawing.Point(240, 80);
@@ -2520,22 +2444,12 @@ namespace TyTrainer
             this.ButtonSteveTop.UseVisualStyleBackColor = true;
             this.ButtonSteveTop.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelSteveBottom
+            // TextSteveBottom
             // 
-            this.LabelSteveBottom.AutoSize = true;
-            this.LabelSteveBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelSteveBottom.Location = new System.Drawing.Point(290, 80);
-            this.LabelSteveBottom.Name = "LabelSteveBottom";
-            this.LabelSteveBottom.Size = new System.Drawing.Size(176, 25);
-            this.LabelSteveBottom.TabIndex = 8;
-            this.LabelSteveBottom.Text = "Steve (Bottom): 10";
-            // 
-            // TextSeveBottom
-            // 
-            this.TextSeveBottom.Location = new System.Drawing.Point(495, 80);
-            this.TextSeveBottom.Name = "TextSeveBottom";
-            this.TextSeveBottom.Size = new System.Drawing.Size(50, 20);
-            this.TextSeveBottom.TabIndex = 27;
+            this.TextSteveBottom.Location = new System.Drawing.Point(0, 80);
+            this.TextSteveBottom.Name = "TextSteveBottom";
+            this.TextSteveBottom.Size = new System.Drawing.Size(50, 20);
+            this.TextSteveBottom.TabIndex = 27;
             // 
             // ButtonSteveBottom
             // 
@@ -2547,23 +2461,6 @@ namespace TyTrainer
             this.ButtonSteveBottom.UseVisualStyleBackColor = true;
             this.ButtonSteveBottom.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelPhotosTop
-            // 
-            this.LabelPhotosTop.AutoSize = true;
-            this.LabelPhotosTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelPhotosTop.Location = new System.Drawing.Point(0, 115);
-            this.LabelPhotosTop.Name = "LabelPhotosTop";
-            this.LabelPhotosTop.Size = new System.Drawing.Size(171, 25);
-            this.LabelPhotosTop.TabIndex = 5;
-            this.LabelPhotosTop.Text = "Photos (Top): 175";
-            // 
-            // TextPhotosTop
-            // 
-            this.TextPhotosTop.Location = new System.Drawing.Point(185, 115);
-            this.TextPhotosTop.Name = "TextPhotosTop";
-            this.TextPhotosTop.Size = new System.Drawing.Size(50, 20);
-            this.TextPhotosTop.TabIndex = 16;
-            // 
             // ButtonPhotosTop
             // 
             this.ButtonPhotosTop.Location = new System.Drawing.Point(240, 115);
@@ -2574,19 +2471,9 @@ namespace TyTrainer
             this.ButtonPhotosTop.UseVisualStyleBackColor = true;
             this.ButtonPhotosTop.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelPhotosBottom
-            // 
-            this.LabelPhotosBottom.AutoSize = true;
-            this.LabelPhotosBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelPhotosBottom.Location = new System.Drawing.Point(290, 115);
-            this.LabelPhotosBottom.Name = "LabelPhotosBottom";
-            this.LabelPhotosBottom.Size = new System.Drawing.Size(197, 25);
-            this.LabelPhotosBottom.TabIndex = 9;
-            this.LabelPhotosBottom.Text = "Photos (Bottom): 175";
-            // 
             // TextPhotosBottom
             // 
-            this.TextPhotosBottom.Location = new System.Drawing.Point(495, 115);
+            this.TextPhotosBottom.Location = new System.Drawing.Point(0, 115);
             this.TextPhotosBottom.Name = "TextPhotosBottom";
             this.TextPhotosBottom.Size = new System.Drawing.Size(50, 20);
             this.TextPhotosBottom.TabIndex = 28;
@@ -2601,23 +2488,6 @@ namespace TyTrainer
             this.ButtonPhotosBottom.UseVisualStyleBackColor = true;
             this.ButtonPhotosBottom.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelCogsTop
-            // 
-            this.LabelCogsTop.AutoSize = true;
-            this.LabelCogsTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelCogsTop.Location = new System.Drawing.Point(0, 150);
-            this.LabelCogsTop.Name = "LabelCogsTop";
-            this.LabelCogsTop.Size = new System.Drawing.Size(146, 25);
-            this.LabelCogsTop.TabIndex = 6;
-            this.LabelCogsTop.Text = "Cogs (Top): 50";
-            // 
-            // TextCogsTop
-            // 
-            this.TextCogsTop.Location = new System.Drawing.Point(185, 150);
-            this.TextCogsTop.Name = "TextCogsTop";
-            this.TextCogsTop.Size = new System.Drawing.Size(50, 20);
-            this.TextCogsTop.TabIndex = 17;
-            // 
             // ButtonCogsTop
             // 
             this.ButtonCogsTop.Location = new System.Drawing.Point(240, 150);
@@ -2628,19 +2498,9 @@ namespace TyTrainer
             this.ButtonCogsTop.UseVisualStyleBackColor = true;
             this.ButtonCogsTop.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelCogsBottom
-            // 
-            this.LabelCogsBottom.AutoSize = true;
-            this.LabelCogsBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelCogsBottom.Location = new System.Drawing.Point(290, 150);
-            this.LabelCogsBottom.Name = "LabelCogsBottom";
-            this.LabelCogsBottom.Size = new System.Drawing.Size(172, 25);
-            this.LabelCogsBottom.TabIndex = 10;
-            this.LabelCogsBottom.Text = "Cogs (Bottom): 50";
-            // 
             // TextCogsBottom
             // 
-            this.TextCogsBottom.Location = new System.Drawing.Point(495, 150);
+            this.TextCogsBottom.Location = new System.Drawing.Point(0, 150);
             this.TextCogsBottom.Name = "TextCogsBottom";
             this.TextCogsBottom.Size = new System.Drawing.Size(50, 20);
             this.TextCogsBottom.TabIndex = 29;
@@ -2655,23 +2515,6 @@ namespace TyTrainer
             this.ButtonCogsBottom.UseVisualStyleBackColor = true;
             this.ButtonCogsBottom.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelOrbsTop
-            // 
-            this.LabelOrbsTop.AutoSize = true;
-            this.LabelOrbsTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelOrbsTop.Location = new System.Drawing.Point(0, 185);
-            this.LabelOrbsTop.Name = "LabelOrbsTop";
-            this.LabelOrbsTop.Size = new System.Drawing.Size(142, 25);
-            this.LabelOrbsTop.TabIndex = 7;
-            this.LabelOrbsTop.Text = "Orbs (Top): 30";
-            // 
-            // TextOrbsTop
-            // 
-            this.TextOrbsTop.Location = new System.Drawing.Point(185, 185);
-            this.TextOrbsTop.Name = "TextOrbsTop";
-            this.TextOrbsTop.Size = new System.Drawing.Size(50, 20);
-            this.TextOrbsTop.TabIndex = 18;
-            // 
             // ButtonOrbsTop
             // 
             this.ButtonOrbsTop.Location = new System.Drawing.Point(240, 185);
@@ -2682,19 +2525,9 @@ namespace TyTrainer
             this.ButtonOrbsTop.UseVisualStyleBackColor = true;
             this.ButtonOrbsTop.Click += new System.EventHandler(this.SetValue);
             // 
-            // LabelOrbsBottom
-            // 
-            this.LabelOrbsBottom.AutoSize = true;
-            this.LabelOrbsBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelOrbsBottom.Location = new System.Drawing.Point(290, 185);
-            this.LabelOrbsBottom.Name = "LabelOrbsBottom";
-            this.LabelOrbsBottom.Size = new System.Drawing.Size(168, 25);
-            this.LabelOrbsBottom.TabIndex = 11;
-            this.LabelOrbsBottom.Text = "Orbs (Bottom): 30";
-            // 
             // TextOrbsBottom
             // 
-            this.TextOrbsBottom.Location = new System.Drawing.Point(495, 185);
+            this.TextOrbsBottom.Location = new System.Drawing.Point(0, 185);
             this.TextOrbsBottom.Name = "TextOrbsBottom";
             this.TextOrbsBottom.Size = new System.Drawing.Size(50, 20);
             this.TextOrbsBottom.TabIndex = 30;
@@ -2729,25 +2562,222 @@ namespace TyTrainer
             this.HelpDisplayItems.UseVisualStyleBackColor = true;
             this.HelpDisplayItems.Click += new System.EventHandler(this.OpenHelp);
             // 
-            // PanelTyFeatures
+            // PanelItemsText2
             // 
-            this.PanelTyFeatures.Controls.Add(this.HelpTyGroundedState);
-            this.PanelTyFeatures.Controls.Add(this.CheckTyGroundedState);
-            this.PanelTyFeatures.Controls.Add(this.HelpTySwimmingState);
-            this.PanelTyFeatures.Controls.Add(this.CheckTySwimmingState);
-            this.PanelTyFeatures.Location = new System.Drawing.Point(0, 0);
-            this.PanelTyFeatures.Name = "PanelTyFeatures";
-            this.PanelTyFeatures.Size = new System.Drawing.Size(585, 30);
-            this.PanelTyFeatures.TabIndex = 27;
+            this.PanelItemsText2.Controls.Add(this.TextBilbiesBottom);
+            this.PanelItemsText2.Controls.Add(this.TextSpiesBottom);
+            this.PanelItemsText2.Controls.Add(this.TextSteveBottom);
+            this.PanelItemsText2.Controls.Add(this.TextPhotosBottom);
+            this.PanelItemsText2.Controls.Add(this.TextCogsBottom);
+            this.PanelItemsText2.Controls.Add(this.TextOrbsBottom);
+            this.PanelItemsText2.Location = new System.Drawing.Point(493, 0);
+            this.PanelItemsText2.Name = "PanelItemsText2";
+            this.PanelItemsText2.Size = new System.Drawing.Size(51, 222);
+            this.PanelItemsText2.TabIndex = 37;
+            // 
+            // PanelItemsButton
+            // 
+            this.PanelItemsButton.Controls.Add(this.ButtonBilbiesTop);
+            this.PanelItemsButton.Controls.Add(this.ButtonBilbiesBottom);
+            this.PanelItemsButton.Controls.Add(this.ButtonSpiesTop);
+            this.PanelItemsButton.Controls.Add(this.ButtonSpiesBottom);
+            this.PanelItemsButton.Controls.Add(this.ButtonSteveTop);
+            this.PanelItemsButton.Controls.Add(this.ButtonSteveBottom);
+            this.PanelItemsButton.Controls.Add(this.ButtonPhotosTop);
+            this.PanelItemsButton.Controls.Add(this.ButtonPhotosBottom);
+            this.PanelItemsButton.Controls.Add(this.ButtonCogsTop);
+            this.PanelItemsButton.Controls.Add(this.ButtonCogsBottom);
+            this.PanelItemsButton.Controls.Add(this.ButtonOrbsTop);
+            this.PanelItemsButton.Controls.Add(this.ButtonOrbsBottom);
+            this.PanelItemsButton.Location = new System.Drawing.Point(0, 0);
+            this.PanelItemsButton.Name = "PanelItemsButton";
+            this.PanelItemsButton.Size = new System.Drawing.Size(605, 222);
+            this.PanelItemsButton.TabIndex = 38;
+            // 
+            // PanelItemsText1
+            // 
+            this.PanelItemsText1.Controls.Add(this.TextBilbiesTop);
+            this.PanelItemsText1.Controls.Add(this.TextSpiesTop);
+            this.PanelItemsText1.Controls.Add(this.TextSteveTop);
+            this.PanelItemsText1.Controls.Add(this.TextPhotosTop);
+            this.PanelItemsText1.Controls.Add(this.TextCogsTop);
+            this.PanelItemsText1.Controls.Add(this.TextOrbsTop);
+            this.PanelItemsText1.Location = new System.Drawing.Point(177, 0);
+            this.PanelItemsText1.Name = "PanelItemsText1";
+            this.PanelItemsText1.Size = new System.Drawing.Size(57, 222);
+            this.PanelItemsText1.TabIndex = 38;
+            // 
+            // TextBilbiesTop
+            // 
+            this.TextBilbiesTop.Location = new System.Drawing.Point(5, 10);
+            this.TextBilbiesTop.Name = "TextBilbiesTop";
+            this.TextBilbiesTop.Size = new System.Drawing.Size(50, 20);
+            this.TextBilbiesTop.TabIndex = 12;
+            // 
+            // TextSpiesTop
+            // 
+            this.TextSpiesTop.Location = new System.Drawing.Point(5, 45);
+            this.TextSpiesTop.Name = "TextSpiesTop";
+            this.TextSpiesTop.Size = new System.Drawing.Size(50, 20);
+            this.TextSpiesTop.TabIndex = 14;
+            // 
+            // TextSteveTop
+            // 
+            this.TextSteveTop.Location = new System.Drawing.Point(5, 80);
+            this.TextSteveTop.Name = "TextSteveTop";
+            this.TextSteveTop.Size = new System.Drawing.Size(50, 20);
+            this.TextSteveTop.TabIndex = 15;
+            // 
+            // TextPhotosTop
+            // 
+            this.TextPhotosTop.Location = new System.Drawing.Point(5, 115);
+            this.TextPhotosTop.Name = "TextPhotosTop";
+            this.TextPhotosTop.Size = new System.Drawing.Size(50, 20);
+            this.TextPhotosTop.TabIndex = 16;
+            // 
+            // TextCogsTop
+            // 
+            this.TextCogsTop.Location = new System.Drawing.Point(5, 150);
+            this.TextCogsTop.Name = "TextCogsTop";
+            this.TextCogsTop.Size = new System.Drawing.Size(50, 20);
+            this.TextCogsTop.TabIndex = 17;
+            // 
+            // TextOrbsTop
+            // 
+            this.TextOrbsTop.Location = new System.Drawing.Point(5, 185);
+            this.TextOrbsTop.Name = "TextOrbsTop";
+            this.TextOrbsTop.Size = new System.Drawing.Size(50, 20);
+            this.TextOrbsTop.TabIndex = 18;
+            // 
+            // LabelBilbiesTop
+            // 
+            this.LabelBilbiesTop.AutoEllipsis = true;
+            this.LabelBilbiesTop.AutoSize = true;
+            this.LabelBilbiesTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelBilbiesTop.Location = new System.Drawing.Point(0, 10);
+            this.LabelBilbiesTop.Name = "LabelBilbiesTop";
+            this.LabelBilbiesTop.Size = new System.Drawing.Size(178, 25);
+            this.LabelBilbiesTop.TabIndex = 39;
+            this.LabelBilbiesTop.Text = "Bilbies (Top): 5000";
+            // 
+            // LabelSpiesTop
+            // 
+            this.LabelSpiesTop.AutoSize = true;
+            this.LabelSpiesTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelSpiesTop.Location = new System.Drawing.Point(0, 45);
+            this.LabelSpiesTop.Name = "LabelSpiesTop";
+            this.LabelSpiesTop.Size = new System.Drawing.Size(149, 25);
+            this.LabelSpiesTop.TabIndex = 40;
+            this.LabelSpiesTop.Text = "Spies (Top): 25";
+            // 
+            // LabelSteveTop
+            // 
+            this.LabelSteveTop.AutoSize = true;
+            this.LabelSteveTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelSteveTop.Location = new System.Drawing.Point(0, 80);
+            this.LabelSteveTop.Name = "LabelSteveTop";
+            this.LabelSteveTop.Size = new System.Drawing.Size(150, 25);
+            this.LabelSteveTop.TabIndex = 41;
+            this.LabelSteveTop.Text = "Steve (Top): 10";
+            // 
+            // LabelPhotosTop
+            // 
+            this.LabelPhotosTop.AutoSize = true;
+            this.LabelPhotosTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelPhotosTop.Location = new System.Drawing.Point(0, 115);
+            this.LabelPhotosTop.Name = "LabelPhotosTop";
+            this.LabelPhotosTop.Size = new System.Drawing.Size(171, 25);
+            this.LabelPhotosTop.TabIndex = 42;
+            this.LabelPhotosTop.Text = "Photos (Top): 175";
+            // 
+            // LabelCogsTop
+            // 
+            this.LabelCogsTop.AutoSize = true;
+            this.LabelCogsTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelCogsTop.Location = new System.Drawing.Point(0, 150);
+            this.LabelCogsTop.Name = "LabelCogsTop";
+            this.LabelCogsTop.Size = new System.Drawing.Size(146, 25);
+            this.LabelCogsTop.TabIndex = 43;
+            this.LabelCogsTop.Text = "Cogs (Top): 50";
+            // 
+            // LabelOrbsTop
+            // 
+            this.LabelOrbsTop.AutoSize = true;
+            this.LabelOrbsTop.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelOrbsTop.Location = new System.Drawing.Point(0, 185);
+            this.LabelOrbsTop.Name = "LabelOrbsTop";
+            this.LabelOrbsTop.Size = new System.Drawing.Size(142, 25);
+            this.LabelOrbsTop.TabIndex = 44;
+            this.LabelOrbsTop.Text = "Orbs (Top): 30";
+            // 
+            // LabelBilbiesBottom
+            // 
+            this.LabelBilbiesBottom.AutoSize = true;
+            this.LabelBilbiesBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelBilbiesBottom.Location = new System.Drawing.Point(290, 10);
+            this.LabelBilbiesBottom.Name = "LabelBilbiesBottom";
+            this.LabelBilbiesBottom.Size = new System.Drawing.Size(204, 25);
+            this.LabelBilbiesBottom.TabIndex = 45;
+            this.LabelBilbiesBottom.Text = "Bilbies (Bottom): 5000";
+            // 
+            // LabelSpiesBottom
+            // 
+            this.LabelSpiesBottom.AutoSize = true;
+            this.LabelSpiesBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelSpiesBottom.Location = new System.Drawing.Point(290, 45);
+            this.LabelSpiesBottom.Name = "LabelSpiesBottom";
+            this.LabelSpiesBottom.Size = new System.Drawing.Size(175, 25);
+            this.LabelSpiesBottom.TabIndex = 46;
+            this.LabelSpiesBottom.Text = "Spies (Bottom): 25";
+            // 
+            // LabelSteveBottom
+            // 
+            this.LabelSteveBottom.AutoSize = true;
+            this.LabelSteveBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelSteveBottom.Location = new System.Drawing.Point(290, 80);
+            this.LabelSteveBottom.Name = "LabelSteveBottom";
+            this.LabelSteveBottom.Size = new System.Drawing.Size(176, 25);
+            this.LabelSteveBottom.TabIndex = 47;
+            this.LabelSteveBottom.Text = "Steve (Bottom): 10";
+            // 
+            // LabelPhotosBottom
+            // 
+            this.LabelPhotosBottom.AutoSize = true;
+            this.LabelPhotosBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelPhotosBottom.Location = new System.Drawing.Point(290, 115);
+            this.LabelPhotosBottom.Name = "LabelPhotosBottom";
+            this.LabelPhotosBottom.Size = new System.Drawing.Size(197, 25);
+            this.LabelPhotosBottom.TabIndex = 48;
+            this.LabelPhotosBottom.Text = "Photos (Bottom): 175";
+            // 
+            // LabelCogsBottom
+            // 
+            this.LabelCogsBottom.AutoSize = true;
+            this.LabelCogsBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelCogsBottom.Location = new System.Drawing.Point(290, 150);
+            this.LabelCogsBottom.Name = "LabelCogsBottom";
+            this.LabelCogsBottom.Size = new System.Drawing.Size(172, 25);
+            this.LabelCogsBottom.TabIndex = 49;
+            this.LabelCogsBottom.Text = "Cogs (Bottom): 50";
+            // 
+            // LabelOrbsBottom
+            // 
+            this.LabelOrbsBottom.AutoSize = true;
+            this.LabelOrbsBottom.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelOrbsBottom.Location = new System.Drawing.Point(290, 185);
+            this.LabelOrbsBottom.Name = "LabelOrbsBottom";
+            this.LabelOrbsBottom.Size = new System.Drawing.Size(168, 25);
+            this.LabelOrbsBottom.TabIndex = 50;
+            this.LabelOrbsBottom.Text = "Orbs (Bottom): 30";
             // 
             // Ty2Trainer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 361);
+            this.Controls.Add(this.MainPanelItems);
             this.Controls.Add(this.MainPanelTy);
             this.Controls.Add(this.MainPanelTruck);
-            this.Controls.Add(this.MainPanelItems);
             this.Controls.Add(this.MainPanelUnknown);
             this.Controls.Add(this.MainPanelKart);
             this.Controls.Add(this.MainPanelBunyip);
@@ -2774,6 +2804,8 @@ namespace TyTrainer
             this.PanelTyText.ResumeLayout(false);
             this.PanelTyText.PerformLayout();
             this.MainPanelTy.ResumeLayout(false);
+            this.PanelTyFeatures.ResumeLayout(false);
+            this.PanelTyFeatures.PerformLayout();
             this.PanelTyHelp.ResumeLayout(false);
             this.PanelTyButton.ResumeLayout(false);
             this.MainPanelTruck.ResumeLayout(false);
@@ -2830,8 +2862,11 @@ namespace TyTrainer
             this.PanelSubCheck.PerformLayout();
             this.MainPanelItems.ResumeLayout(false);
             this.MainPanelItems.PerformLayout();
-            this.PanelTyFeatures.ResumeLayout(false);
-            this.PanelTyFeatures.PerformLayout();
+            this.PanelItemsText2.ResumeLayout(false);
+            this.PanelItemsText2.PerformLayout();
+            this.PanelItemsButton.ResumeLayout(false);
+            this.PanelItemsText1.ResumeLayout(false);
+            this.PanelItemsText1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3034,27 +3069,9 @@ namespace TyTrainer
         private System.Windows.Forms.CheckBox CheckTyZSpeed;
         private System.Windows.Forms.CheckBox CheckShowItemPanel;
         private System.Windows.Forms.Panel MainPanelItems;
-        private System.Windows.Forms.Label LabelBilbiesTop;
-        private System.Windows.Forms.Label LabelSpiesBottom;
-        private System.Windows.Forms.Label LabelSpiesTop;
-        private System.Windows.Forms.Label LabelBilbiesBottom;
-        private System.Windows.Forms.Label LabelOrbsTop;
-        private System.Windows.Forms.Label LabelCogsTop;
-        private System.Windows.Forms.Label LabelPhotosTop;
-        private System.Windows.Forms.Label LabelSteveTop;
-        private System.Windows.Forms.Label LabelOrbsBottom;
-        private System.Windows.Forms.Label LabelCogsBottom;
-        private System.Windows.Forms.Label LabelPhotosBottom;
-        private System.Windows.Forms.Label LabelSteveBottom;
         private System.Windows.Forms.Button HelpCharacterState;
         private System.Windows.Forms.Button HelpDisplayItems;
-        private System.Windows.Forms.TextBox TextBilbiesTop;
         private System.Windows.Forms.Button ButtonBilbiesTop;
-        private System.Windows.Forms.TextBox TextOrbsTop;
-        private System.Windows.Forms.TextBox TextCogsTop;
-        private System.Windows.Forms.TextBox TextPhotosTop;
-        private System.Windows.Forms.TextBox TextSteveTop;
-        private System.Windows.Forms.TextBox TextSpiesTop;
         private System.Windows.Forms.Button ButtonOrbsTop;
         private System.Windows.Forms.Button ButtonCogsTop;
         private System.Windows.Forms.Button ButtonPhotosTop;
@@ -3065,7 +3082,7 @@ namespace TyTrainer
         private System.Windows.Forms.TextBox TextOrbsBottom;
         private System.Windows.Forms.TextBox TextCogsBottom;
         private System.Windows.Forms.TextBox TextPhotosBottom;
-        private System.Windows.Forms.TextBox TextSeveBottom;
+        private System.Windows.Forms.TextBox TextSteveBottom;
         private System.Windows.Forms.TextBox TextSpiesBottom;
         private System.Windows.Forms.Button ButtonOrbsBottom;
         private System.Windows.Forms.Button ButtonCogsBottom;
@@ -3077,6 +3094,27 @@ namespace TyTrainer
         private System.Windows.Forms.CheckBox CheckTySwimmingState;
         private System.Windows.Forms.Button HelpTySwimmingState;
         private System.Windows.Forms.Panel PanelTyFeatures;
+        private System.Windows.Forms.Panel PanelItemsText2;
+        private System.Windows.Forms.Panel PanelItemsButton;
+        private System.Windows.Forms.Panel PanelItemsText1;
+        private System.Windows.Forms.TextBox TextBilbiesTop;
+        private System.Windows.Forms.TextBox TextSpiesTop;
+        private System.Windows.Forms.TextBox TextSteveTop;
+        private System.Windows.Forms.TextBox TextPhotosTop;
+        private System.Windows.Forms.TextBox TextCogsTop;
+        private System.Windows.Forms.TextBox TextOrbsTop;
+        private System.Windows.Forms.Label LabelBilbiesTop;
+        private System.Windows.Forms.Label LabelSpiesTop;
+        private System.Windows.Forms.Label LabelSteveTop;
+        private System.Windows.Forms.Label LabelPhotosTop;
+        private System.Windows.Forms.Label LabelCogsTop;
+        private System.Windows.Forms.Label LabelOrbsTop;
+        private System.Windows.Forms.Label LabelBilbiesBottom;
+        private System.Windows.Forms.Label LabelSpiesBottom;
+        private System.Windows.Forms.Label LabelSteveBottom;
+        private System.Windows.Forms.Label LabelPhotosBottom;
+        private System.Windows.Forms.Label LabelCogsBottom;
+        private System.Windows.Forms.Label LabelOrbsBottom;
     }
 }
 
