@@ -1,8 +1,12 @@
+placeholder for BilbiesBottom
+placeholder for BilbiesTop
 Determines the current health of a Bunyip. Ranges from 0.0-1.0. Named "visual" because this doubles as both the internal health and how much the HUD health display is filled in.
 Determines the current X position of a Bunyip. X is considered to be left-right movement on minimaps.
 Determines the current Y position of a Bunyip. Y is considered to be height.
 Determines the current Z position of a Bunyip. Z is considered to be up-down movement on minimaps.
 Determines whether the player is currently playing as Ty, driving, etc.
+placeholder for CogsBottom
+placeholder for CogsTop
 Determines where the player is in the game at the moment. This value is unique to almost every area of the game, allowing for such deductions.
 Determines the current health of the Helicopter. Ranges from 0.0-1.0. Named "visual" because this doubles as both the internal health and how much the HUD health display is filled in.
 Determines the current X position of the Helicopter. X is considered to be left-right movement on minimaps.
@@ -11,6 +15,14 @@ Determines the current Z position of the Helicopter. Z is considered to be up-do
 Determines the current X position of a racing Kart. X is considered to be left-right movement on minimaps.
 Determines the current Y position of a racing Kart. Y is considered to be height.
 Determines the current Z position of a racing Kart. Z is considered to be up-down movement on minimaps.
+placeholder for OrbsBottom
+placeholder for OrbsTop
+placeholder for PhotosBottom
+placeholder for PhotosTop
+placeholder for SpiesBottom
+placeholder for SpiesTop
+placeholder for SteveBottom
+placeholder for SteveTop
 Determines the current health of the Sub Bunyip. Ranges from 0.0-1.0. Named "visual" because this doubles as both the internal health and how much the HUD health display is filled in.
 Determines the current X position of the Sub Bunyip. X is considered to be left-right movement on minimaps.
 Determines the current Y position of the Sub Bunyip. Y is considered to be height.
