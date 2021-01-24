@@ -1,45 +1,61 @@
-placeholder for BilbiesBottom
-placeholder for BilbiesTop
+Determines the bottom number displayed on the pause menu's "totals" screen for Bilbies. This is normally 30. Changing the bottom number doesn't change the % counter.
+Determines the top number displayed on the pause menu's "totals" screen for Bilbies. This normally ranges from 0 to 30. Changing the top number directly results in the % counter changing.
 Determines the current health of a Bunyip. Ranges from 0.0-1.0. Named "visual" because this doubles as both the internal health and how much the HUD health display is filled in.
-Determines the current X position of a Bunyip. X is considered to be left-right movement on minimaps.
+Determines the current X position of a Bunyip. X is considered to be east-west movement on minimaps.
+Determines the current X speed of a Bunyip. X is considered to be east-west movmeent on minimaps.
 Determines the current Y position of a Bunyip. Y is considered to be height.
-Determines the current Z position of a Bunyip. Z is considered to be up-down movement on minimaps.
+Determines the current Y speed of a Bunyip. Y is considered to be height.
+Determines the current Z position of a Bunyip. Z is considered to be north-south movement on minimaps.
+Determines the current Z speed of a Bunyip. Z is considered to be north-south movement on minimaps.
 Determines whether the player is currently playing as Ty, driving, etc.
-placeholder for CogsBottom
-placeholder for CogsTop
+Determines the bottom number displayed on the pause menu's "totals" screen for Cogs. This is normally 50. Changing the bottom number doesn't change the % counter.
+Determines the top number displayed on the pause menu's "totals" screen for Cogs. This normally ranges from 0 to 50. Changing the top number directly results in the % counter changing.
 Determines where the player is in the game at the moment. This value is unique to almost every area of the game, allowing for such deductions.
+placeholder for GameLoading
+placeholder for GamePaused
 Determines the current health of the Helicopter. Ranges from 0.0-1.0. Named "visual" because this doubles as both the internal health and how much the HUD health display is filled in.
-Determines the current X position of the Helicopter. X is considered to be left-right movement on minimaps.
+Determines the current X position of the Helicopter. X is considered to be east-west movement on minimaps.
+Determines the current X speed of the Helicopter. X is considered to be east-west movement on minimaps.
 Determines the current Y position of the Helicopter. Y is considered to be height.
-Determines the current Z position of the Helicopter. Z is considered to be up-down movement on minimaps.
-Determines the current X position of a racing Kart. X is considered to be left-right movement on minimaps.
+Determines the current Y speed of the Helicopter. Y is considered to be height.
+Determines the current Z position of the Helicopter. Z is considered to be north-south movement on minimaps.
+Determines the current Z speed of the Helicopter. Z is considered to be north-south movement on minimaps.
+Determines the current X position of a racing Kart. X is considered to be east-west movement on minimaps.
+Determines the current X speed of a racing Kart. X is considered to be east-west movement on minimaps.
 Determines the current Y position of a racing Kart. Y is considered to be height.
-Determines the current Z position of a racing Kart. Z is considered to be up-down movement on minimaps.
-placeholder for OrbsBottom
-placeholder for OrbsTop
-placeholder for PhotosBottom
-placeholder for PhotosTop
-placeholder for SpiesBottom
-placeholder for SpiesTop
-placeholder for SteveBottom
-placeholder for SteveTop
+Determines the current Y speed of a racing Kart. Y is considered to be height. The Y speed in kart racing acts oddly in that it still remains a negative value even when not moving - this is not a bug with the trainer, this is the value taken directly from the game.
+Determines the current Z position of a racing Kart. Z is considered to be north-south movement on minimaps.
+Determines the current Z speed of a racing Kart. Z is considered to be north-south movement on minimaps.
+Determines the bottom number displayed on the pause menu's "totals" screen for Orbs. This is normally 30. Changing the bottom number doesn't change the % counter.
+Determines the top number displayed on the pause menu's "totals" screen for Orbs. This normally ranges from 0 to 30. Changing the top number directly results in the % counter changing.
+Determines the bottom number displayed on the pause menu's "totals" screen for Photos. This is normally 175. Changing the bottom number doesn't change the % counter.
+Determines the top number displayed on the pause menu's "totals" screen for Photos. This normally ranges from 0 to 175. Changing the top number directly results in the % counter changing.
+Determines the bottom number displayed on the pause menu's "totals" screen for Spies. This is normally 25. Changing the bottom number doesn't change the % counter.
+Determines the top number displayed on the pause menu's "totals" screen for Spies. This normally ranges from 0 to 25. Changing the top number directly results in the % counter changing.
+Determines the bottom number displayed on the pause menu's "totals" screen for Steves. This is normally 10. Changing the bottom number doesn't change the % counter.
+Determines the top number displayed on the pause menu's "totals" screen for Steves. This normally ranges from 0 to 10. Changing the top number directly results in the % counter changing.
 Determines the current health of the Sub Bunyip. Ranges from 0.0-1.0. Named "visual" because this doubles as both the internal health and how much the HUD health display is filled in.
-Determines the current X position of the Sub Bunyip. X is considered to be left-right movement on minimaps.
+Determines the current X position of the Sub Bunyip. X is considered to be east-west movement on minimaps.
+Determines the current X speed of the Sub Bunyip. X is considered to be east-west movement on minimaps.
 Determines the current Y position of the Sub Bunyip. Y is considered to be height.
-Determines the current Z position of the Sub Bunyip. Z is considered to be up-down movement on minimaps.
+Determines the current Y speed of the Sub Bunyip. Y is considered to be height.
+Determines the current Z position of the Sub Bunyip. Z is considered to be north-south movement on minimaps.
+Determines the current Z speed of the Sub Bunyip. Z is considered to be north-south movement on minimaps.
 Determines the current health of Shazza's Truck. Ranges from 0-20. The truck's internal health count has its own value separate from its visual value. Taking damage with this value set to 0 will not kill you - this is not a bug, just a quirk in how the game checks for death while driving.
 Determines the portion of the HUD health display for Shazza's truck that is filled in currently. Ranges from 0.0-1.0.
-Determines the current X position of Shazza's Truck. X is considered to be left-right movement on minimaps.
+Determines the current X position of Shazza's Truck. X is considered to be east-west movement on minimaps.
+Determines the current X speed of Shazza's Truck. X is considered to be east-west movement on minimaps.
 Determines the current Y position of Shazza's Truck. Y is considered to be height.
-Determines the current Z position of Shazza's Truck. Z is considered to be up-down movement on minimaps.
+Determines the current Y speed of Shazza's Truck. X is considered to be height.
+Determines the current Z position of Shazza's Truck. Z is considered to be north-south movement on minimaps.
+Determines the current Z speed of Shazza's Truck. Z is considered to be north-south movement on minimaps.
 Determines Ty's current grounded state. This value is 1 (TRUE) when Ty is on the ground, and 0 (FALSE) when in the air. Freezing this value at 1 is how the "Infinite Jump" feature of this trainer works. Enabling "Infinite Jump" makes it so Ty can jump again repeatedly when already in the air. Because the game will still attempt to make Ty lose height, it is recommended to lock his Y position once at the desired height.
 Determines Ty's current health. This value ranges from 0 to either 4, 8, or 12, depending on if any of the health upgrades are purchased.
 Determines the current speed cap of Ty's horizontal (X/Z) movement. Ty's current horizontal speed gradually increases until it reaches this value. This is more useful to set to a high value than Ty's actual speed, because you can control movement much better.
 Determines whether Ty is currently swimming or not. This value is 1 (TRUE) when Ty is swimming, and 0 (FALSE) when not. Freezing this value at 0 is how the "Infinite Swim" feature of this trainer works. Enabling "Infinite Swim" makes Ty take no damage from air deprivation underwater, allowing you to swim infinitely.
-Determines the current X position of Ty. X is considered to be left-right movement on minimaps.
+Determines the current X position of Ty. X is considered to be east-west movement on minimaps.
 Determines Ty's current X speed. If you want to increase Ty's movement speed, it is recommended to instead increase the Horiz. speed cap instead, as movement is easier to control.
 Determines the current Y position of Ty. Y is considered to be height. If you want to float around levels, it is recommended to freeze this value at the height you want, and also freeze Ty's Y Speed to 0 for a smoother visual effect.
 Determines Ty's current Y speed. Due to a quirk with how the game uses this value, you may have to jump before the effect of changing this value kicks in. Ty's speed as he glides is always locked to -330.
-Determines the current Z position of Ty. Z is considered to be up-down movement on minimaps.
+Determines the current Z position of Ty. Z is considered to be north-south movement on minimaps.
 Determines Ty's current Z speed. If you want to increase Ty's movement speed, it is recommended to instead increase the Horiz. speed cap instead, as movement is easier to control.
-Displays the total counts for 6 items on the total screen. Proper totals: Bilbies (30), Spies (25), Steves (10), Photos (175), Cogs (50), Orbs (30). Changing the top number directly affects the % counter. If you artifically increase the % counter to 100% and do the final mission, you will get the secret ending. NOTE: you must re-load the totals screen in order for your changes to show up.

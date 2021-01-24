@@ -1,44 +1,61 @@
-int BilbiesBottom base+00446774,11C no
-int BilbiesTop base+00446774,120 no
-float BunyipHealthVisual base+00447638,70,608 yes
-float BunyipX base+00447638,70,4DC yes
-float BunyipY base+00447638,70,4E0 yes
-float BunyipZ base+00447638,70,4E4 yes
-int CharacterState base+0043EC7C,60,60,2C no
-int CogsBottom base+00446774,108 no
-int CogsTop base+00446774,10C no
-string CurrentMusicTitle base+00274F6C,26 no
-float HeliHealthVisual base+00456130,160,5C,C,504 yes
-float HeliX base+00456130,EC,8,70 yes
-float HeliY base+00456130,EC,8,74 yes
-float HeliZ base+00456130,EC,8,78 yes
-float KartX base+004465C0,10,544,F0,444 yes
-float KartY base+004465C0,10,544,F0,448 yes
-float KartZ base+004465C0,10,544,F0,44C yes
-int OrbsBottom base+00446774,144 no
-int OrbsTop base+00446774,148 no
-int PhotosBottom base+00446774,130 no
-int PhotosTop base+00446774,134 no
-int SpiesBottom base+00446774,16C no
-int SpiesTop base+00446774,170 no
-int SteveBottom base+00446774,158 no
-int SteveTop base+00446774,15C no
-float SubHealthVisual base+00456130,160,5C,C,504 yes
-float SubX base+00456130,EC,8,70 yes
-float SubY base+00456130,EC,8,74 yes
-float SubZ base+00456130,EC,8,78 yes
-int TruckHealthInternal base+00447C88,8C,35C,94,400 yes
-float TruckHealthVisual base+00451ED4,5C,504 yes
-float TruckX base+00447C88,8C,35C,EC,10,30 yes
-float TruckY base+00447C88,8C,35C,EC,10,34 yes
-float TruckZ base+00447C88,8C,35C,EC,10,38 yes
-int TyGroundedState base+0043EC7C,17C,4 yes
-int TyHealth base+00107384,0 yes
-float TyHorizSpeedCap base+0043EC7C,40,44,1F4,EC,0,38 yes
-int TySwimmingState base+0043EC7C,64 yes
-float TyX base+004465EC,3C,1E8,17C,444 yes
-float TyXSpeed base+0043EC7C,57C yes
-float TyY base+004465EC,3C,1E8,17C,448 yes
-float TyYSpeed base+004465EC,3C,238,4,580 yes
-float TyZ base+004465EC,3C,1E8,17C,44C yes
-float TyZSpeed base+0043EC7C,584 yes
+int BilbiesBottom base+00446774,11C
+int BilbiesTop base+00446774,120
+float BunyipHealthVisual base+00447638,70,608
+float BunyipX base+00447638,70,4DC
+float BunyipXSpeed base+00447638,70,524
+float BunyipY base+00447638,70,4E0
+float BunyipYSpeed base+00447638,70,528
+float BunyipZ base+00447638,70,4E4
+float BunyipZSpeed base+00447638,70,52C
+int CharacterState base+0043EC7C,60,60,2C
+int CogsBottom base+00446774,108
+int CogsTop base+00446774,10C
+string CurrentMusicTitle base+00274F6C,26
+int GameLoading base+004523D8,4F0
+int GamePaused base+4465A0
+float HeliHealthVisual base+00456130,160,5C,C,504
+float HeliX base+00456130,EC,8,70
+float HeliXSpeed base+0043EC9C,6C,B8,7C
+float HeliY base+00456130,EC,8,74
+float HeliYSpeed base+0043EC9C,6C,B8,80
+float HeliZ base+00456130,EC,8,78
+float HeliZSpeed base+0043EC9C,6C,B8,84
+float KartX base+004465C0,10,544,F0,444
+float KartXSpeed base+0043E5AC,A6C,608,F4,C4
+float KartY base+004465C0,10,544,F0,448
+float KartYSpeed base+0043E5AC,A6C,608,F4,C8
+float KartZ base+004465C0,10,544,F0,44C
+float KartZSpeed base+0043E5AC,A6C,608,F4,CC
+int OrbsBottom base+00446774,144
+int OrbsTop base+00446774,148
+int PhotosBottom base+00446774,130
+int PhotosTop base+00446774,134
+int SpiesBottom base+00446774,16C
+int SpiesTop base+00446774,170
+int SteveBottom base+00446774,158
+int SteveTop base+00446774,15C
+float SubHealthVisual base+00456130,160,5C,C,504
+float SubX base+00456130,EC,8,70
+float SubXSpeed base+0043EC9C,6C,B8,7C
+float SubY base+00456130,EC,8,74
+float SubYSpeed base+0043EC9C,6C,B8,80
+float SubZ base+00456130,EC,8,78
+float SubZSpeed base+0043EC9C,6C,B8,84
+int TruckHealthInternal base+00447C88,8C,35C,94,400
+float TruckHealthVisual base+00451ED4,5C,504
+float TruckX base+00447C88,8C,35C,EC,10,30
+float TruckXSpeed base+00E2BC00,FA4,F4,F4
+float TruckY base+00447C88,8C,35C,EC,10,34
+float TruckYSpeed base+00E2BC00,FA4,F4,F8
+float TruckZ base+00447C88,8C,35C,EC,10,38
+float TruckZSpeed base+00E2BC00,FA4,F4,FC
+int TyGroundedState base+0043EC7C,17C,4
+int TyHealth base+00107384,0
+float TySpeedCap base+0043EC7C,40,44,1F4,EC,0,38
+int TySwimmingState base+0043EC7C,64
+float TyX base+004465EC,3C,1E8,17C,444
+float TyXSpeed base+0043EC7C,57C
+float TyY base+004465EC,3C,1E8,17C,448
+float TyYSpeed base+004465EC,3C,238,4,580
+float TyZ base+004465EC,3C,1E8,17C,44C
+float TyZSpeed base+0043EC7C,584

@@ -9,7 +9,7 @@ namespace TyTrainer
             InitializeComponent();
             HelpName.Text = "NAME: " + name;
             DataType.Text = "DATA TYPE: " + type;
-            Information.Text = "INFORMATION: " + information;
+            LabelInformation.Text = "INFORMATION: " + information;
         }
     }
 }

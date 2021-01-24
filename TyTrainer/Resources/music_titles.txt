@@ -1,6 +1,7 @@
 b4 e1 e4 e4_ty
 a4_intro a4_end b4_intro b4_end c4_intro c4_outro e1_12 e1_13 e1_14 cassdefeated csp1_01 csp1_02 csp1_04 csp1_05 csp1_07 csp1_08 csp1_09 csp1_10 csp1_11 m16_cs m59_cs z3_cs01 z3_cs20 z3_cs22 z3_cs23 z3_cs27 z3_cs28 c3_cs99
 m2 m13 m14 m28 m33
+itemsPlaceholder
 r1 r1_ll r2 r2_ll r3 r3_ll r4 r4_ll r6 r6_ll r7 r7_ll r9 r9_ll
 m40 m64
 mainmenu kartmenu mopoke shop1 shop2 shop3 b36 garage1 race_win

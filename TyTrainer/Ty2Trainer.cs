@@ -1,528 +1,781 @@
-﻿using System.Configuration;
+﻿using ControlExtension;
 using Memory;
 using System;
-using System.ComponentModel;
-using System.Threading;
-using System.Windows.Forms;
 using System.Collections.Generic;
-using System.IO;
+using System.Configuration;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
 
 namespace TyTrainer
 {
+
     public partial class Ty2Trainer : Form
     {
-        public Mem memory = new Mem();
-        bool processOpen = false; //tracks whether Ty2.exe is open or not
-        readonly List<string> pointerTypes = new List<string>(); //stores the data type of each pointer
-        readonly List<string> pointerNames = new List<string>(); //stores the name of each pointer
-        readonly List<string> pointers = new List<string>(); //stores the address of each pointer
-        List<string> helpTexts = new List<string>(); //stores the help texts that appear when help buttons are clicked
-        readonly List<Panel> mainPanels = new List<Panel>(); //stores all of the Top-Level panels (PanelBunyip, PanelTy, etc.)
-        readonly List<CheckBox> checkBoxes = new List<CheckBox>(); //stores all of the CheckBoxes
-        readonly List<string> noCheckBoxes = new List<string>(); //stores list of values that don't have checkboxes associated with them (simplifies logic later)
-        readonly List<TextBox> textBoxes = new List<TextBox>(); //stores all of the TextBoxes
-        readonly List<List<string>> musicTitles = new List<List<string>>(); //stores in-game music titles ordered by category
-        string currentMusicTitle = ""; //tracks the currently playing music, used to know where in the game the player is
+        //General Purpose
+        readonly Mem memory = new Mem();
+        const string gameName = "TY the Tasmanian Tiger 2: Bush Rescue";
+        int updateTime; //timer interval length        
+        readonly StreamWriter logWriter = new StreamWriter("log.txt");
+        bool verboseLogging, loggedGameStatus = false;
 
-        //modes determine which UI Panel to display at each moment
-        readonly string[] modes = { "Bunyip", "Cutscene", "Heli", "Kart", "Sub", "Other", "Ty", "Truck", "Unknown" };
-        string mode;
-        bool itemsShowing = false;
+        //Persistent Game/Trainer Data
+        readonly string[] modes = { "Bunyip", "Cutscene", "Heli", "Items", "Kart", "Sub", "Other", 
+            "Ty", "Truck", "Unknown" };
+        Panel frontPanel;
+        string currentMode; //determines what UI display to use
+        string currentMusicTitle = "";
+        float teleportX, teleportY, teleportZ;
 
-        //stores pairs of Address Name -> Label Text for UI
-        readonly SortedDictionary<string, string> labelLookup = new SortedDictionary<string, string>();
+        //Information From Resource Files
+        readonly List<string> pointerTypes = new List<string>();
+        readonly List<string> pointerNames = new List<string>();
+        readonly List<string> pointerAddresses = new List<string>();
+        List<string> helpTexts = new List<string>();
+        readonly List<List<string>> musicTitles = new List<List<string>>(); //stores music titles by category
 
-        //stores pairs of Music Title -> Music String for displaying for UI
-        readonly Dictionary<string, string> musicStrings = new Dictionary<string, string>();
-
-        //stores pairs of Character State -> UI Text
-        readonly Dictionary<int, string> stateStrings = new Dictionary<int, string>();
-
-        //stores pairs of toggleable feature names - feature text
+        //Dictionary Pairs
+        readonly Dictionary<string, string> addressLabelStrings = new Dictionary<string, string>();
+        readonly Dictionary<string, string> musicTitleStrings = new Dictionary<string, string>();
+        readonly Dictionary<int, string> characterStateStrings = new Dictionary<int, string>();
         readonly Dictionary<string, string> featureNames = new Dictionary<string, string>()
         {
             {  "TyGroundedState", "Infinite Jump" },
             { "TySwimmingState", "Infinite Swim" }
         };
 
-        //logging and application settings from config.ini
-        StreamWriter logWriter = null;
-        bool verboseLogging; //whether to detail everything or just important events
-        bool loggedStartup = false; //whether the startup is done or not
-        int updateTime; //how often to do the main loop of the program (lower for less CPU usage)
+        //Hotkeys
+        [DllImport("user32.dll")]
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, int fsModifiers, int vlc);
+        [DllImport("user32.dll")]
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        float XSpeed, YSpeed, ZSpeed;
+        readonly List<string> customHotkeyList = new List<string>();
+        readonly List<string> hotkeyNameList = new List<string>() { "XLessKey", "XMoreKey", "YLessKey",
+                "YMoreKey", "ZLessKey", "ZMoreKey", "CheckPositionKey", "SetPositionKey", "TeleportKey" };
+        readonly List<Keys> keysList = Enum.GetValues(typeof(Keys)).Cast<Keys>().ToList();
+        bool hotkeysEnabled = false;
 
         public Ty2Trainer()
         {
-            string[] noTextBoxes = { "CharacterState", "CurrentMusicTitle", "TyGroundedState", "TySwimmingState" };
-            Log("Initializing Components...", "SETUP", false);
+            Log("Initializing trainer...", "SETUP", false);
             InitializeComponent();
-            LabelLastAction.Text = "";
-            foreach (Control control in this.Controls)
-            {
-                if (control.Name.Contains("MainPanel"))
-                {
-                    mainPanels.Add((Panel)control);
-                    musicTitles.Add(new List<string>()); //same number of MainPanels as musicTitle lists
-                }
-            }
-            ReadFiles();
-            foreach (string name in pointerNames)
-            {
-                if(!noCheckBoxes.Contains(name))
-                {
-                    checkBoxes.Add((CheckBox)this.Controls.Find("Check" + name, true)[0]);
-                }
-                if (Array.IndexOf(noTextBoxes, name) == -1)
-                {
-                    textBoxes.Add((TextBox)this.Controls.Find("Text" + name, true)[0]);
-                }
-            }
+
+            //Initialize with Startup panel in front (should immediately change)
+            frontPanel = (Panel)this.Controls.Find("MainPanelStartup", false)[0];
+            frontPanel.BringToFront();
+
+            //Read settings from App.config and resource .txt files
+            ReadAppSettings();
+            ReadResourceFiles();
+
             Log("Trainer initialized.", "SETUP", false);
         }
 
-        private void ReadFiles()
-        {
-            //load App Settings
-            Log("Loading App.config settings...", "SETUP", true);
-            updateTime = int.Parse(ConfigurationManager.AppSettings.Get("UpdateTime"));
-            Log("updateTime set to " + updateTime + ".", "SETUP", false);
-            verboseLogging = bool.Parse(ConfigurationManager.AppSettings.Get("VerboseLogging"));
-            Log("verbose set to " + verboseLogging + ".", "SETUP", false);
-
-            //pointers.txt contains each pointer's type, name, and address
-            Log("Loading resource files...", "SETUP", false);
-            Log("Reading pointers.txt.", "SETUP", true);
-            string[] lines = GetLines("pointers.txt");
-            foreach (string line in lines)
-            {
-                string[] split = line.Split(' ');
-                pointerTypes.Add(split[0]);
-                pointerNames.Add(split[1]);
-                pointers.Add(split[2]);
-                if (split[3] == "no")
-                    noCheckBoxes.Add(split[1]);
-            }
-
-            //music_titles.txt contains lists of music titles in order of category
-            Log("Reading music_titles.txt.", "SETUP", true);
-            lines = GetLines("music_titles.txt");
-            for (int i = 0; i < lines.Length; ++i)
-            {
-                string[] split = lines[i].Split(' ');
-                foreach (string token in split)
-                {
-                    musicTitles[i].Add(token);
-                }
-            }
-
-            //music_strings.txt contains list of what to display on the UI for each music title
-            Log("Reading music_strings.txt.", "SETUP", true);
-            lines = GetLines("music_strings.txt");
-            foreach (string line in lines)
-            {
-                string[] split = line.Split(' ');
-                musicStrings.Add(split[0], split[1].Replace('_', ' ')); //_ is placeholder for spaces in file
-            }
-
-            //labelLookup stores pairs of address name -> UI text
-            Log("Reading UI_text.txt.", "SETUP", true);
-            lines = GetLines("UI_text.txt");
-            for (int i = 0; i < lines.Length; ++i)
-            {
-                string line = lines[i];
-                labelLookup.Add(pointerNames[i], line);
-            }
-
-            //stateStrings stores UI text for each character state
-            Log("Reading state_strings.txt.", "SETUP", true);
-            lines = GetLines("state_strings.txt");
-            foreach (string line in lines)
-            {
-                string[] split = line.Split(' ');
-                stateStrings.Add(int.Parse(split[0]), split[1].Replace('_', ' '));
-            }
-
-            //helpTexts stores help texts for help buttons
-            Log("Reading help_texts.txt.", "SETUP", true);
-            helpTexts = new List<string>(GetLines("help_texts.txt"));
-        }
-
-        private string[] GetLines(string file)
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            StreamReader reader = new StreamReader(asm.GetManifestResourceStream("TyTrainer.Resources." + file));
-            List<string> lines = new List<string>();
-            while (!reader.EndOfStream)
-                lines.Add(reader.ReadLine());
-            return lines.ToArray();
-        }
-
-        private string GetPointer(string name)
-        {
-            return pointers[pointerNames.IndexOf(name)]; //returns pointer address given a pointer name
-        }
-
-        private void WorkerDoWork(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                processOpen = memory.OpenProcess("Ty2");
-                if (!processOpen)
-                {
-                    loggedStartup = false;
-                    Log("Ty2.exe is not open. Waiting 5 seconds and trying again.", "WARNING", false);
-                    worker.ReportProgress(0);
-                    mode = "Closed";
-                    if (LabelCurrentArea.Text != "Current Area: Game Closed!")
-                        Invoke(new Action(() => LabelCurrentArea.Text = "Current Area: Game Closed!"));
-                    if (mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 0).Name != "MainPanelClosed")
-                        UpdateUI(mainPanels.Find(panel => panel.Name == "MainPanel" + mode));
-                    Thread.Sleep(5000);
-                    continue;
-                }
-                else if (processOpen && !loggedStartup)
-                {
-                    Log("Ty2.exe opened.", "GAME", false);
-                    loggedStartup = true;
-                }
-
-                bool modeUpdated = GetMode(); //update mode to determine what UI should be shown
-                UpdateArea(); //update area name text
-                UpdateState(); //update character state text
-
-                //if necessary, update UI
-                if (modeUpdated)
-                    UpdateUI(mainPanels.Find(panel => panel.Name == "MainPanel" + mode));
-
-                //if necessary, update label texts
-                if (mode != "Cutscene" && mode != "Other" && mode != "Unknown")
-                    UpdateLabels(mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 0));
-
-                worker.ReportProgress(0); //report progress to update closed/open status
-                Thread.Sleep(updateTime);
-            }
-        }
-
-        private bool GetMode()
-        {
-            if (itemsShowing)
-                return false; //leave immediately if items window is showing currently
-
-            string oldMusic = currentMusicTitle;
-            string oldMode = mode; //store current mode to determine if mode was changed
-            if (memory.ReadString(GetPointer("CurrentMusicTitle")) != "missionsucceed")
-                currentMusicTitle = memory.ReadString(GetPointer("CurrentMusicTitle")).ToLower(); //grab current music title
-            bool found = false; //tracks if current music title has been found in an array or not
-
-            for (int i = 0; i < musicTitles.Count; ++i)
-            {
-                if (musicTitles[i].IndexOf(currentMusicTitle) != -1)
-                {
-                    if (i == 8) //TyBunyip case
-                        mode = memory.ReadInt(GetPointer("CharacterState")) == 0 ? "Ty" : "Bunyip";
-                    else if (i == 9) //TyTruck case
-                        mode = memory.ReadInt(GetPointer("CharacterState")) == 0 ? "Ty" : "Truck";
-                    else
-                        mode = modes[i];
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found)
-                mode = "Unknown"; //if not otherwise found, assume Unknown
-
-            if (oldMode != mode)
-                Log("Mode changed from " + oldMode + " to " + mode + ".", "GAME", true);
-
-            if (oldMusic != currentMusicTitle && oldMusic != "" && currentMusicTitle != "")
-                Log("Music changed from " + musicStrings[oldMusic] + " to " + musicStrings[currentMusicTitle] + ".", "GAME", true);
-
-            return oldMode != mode; //true if mode has been changed
-        }
-
-        private void UpdateArea()
-        {
-            string text;
-            if (musicStrings.ContainsKey(currentMusicTitle))
-                text = musicStrings[currentMusicTitle];
-            else
-                text = "Unknown";
-
-            if (LabelCurrentArea.Text != "Current Area: " + text)
-                Invoke(new Action(() => LabelCurrentArea.Text = "Current Area: " + text));
-        }
-
-        private void UpdateState()
-        {
-            string state = stateStrings[memory.ReadInt(GetPointer("CharacterState"))];
-            string currentState = LabelCharacterState.Text.Substring(17);
-            string text = "Character State: " + state;
-            if (LabelCharacterState.Text != text)
-            {
-                Log("Character State changed from " + currentState + " to " + state + ".", "GAME", true);
-                Invoke(new Action(() => LabelCharacterState.Text = text));
-            }
-        }
-
-        private void UpdateUI(Panel panel)
-        {
-            //remove text/undo checks before switching, to avoid issues
-            Panel inFront = mainPanels.Find(front => front.Parent.Controls.GetChildIndex(front) == 0);
-            foreach (CheckBox check in checkBoxes.FindAll(chk => chk.Name.Contains(inFront.Name.Substring(9))))
-            {
-                if (check.Checked)
-                {
-                    string name = pointerNames[pointers.IndexOf(GetPointer(check.Name.Substring(5)))];
-                    Log("Unfreezing " + name + ".", "FREEZE", false);
-                    Invoke(new Action(() => check.Checked = false));
-                    memory.UnfreezeValue(GetPointer(check.Name.Substring(5)));
-                }
-            }
-            foreach (TextBox text in textBoxes.FindAll(txt => txt.Name.Contains(inFront.Name.Substring(9))))
-                Invoke(new Action(() => text.Text = ""));
-            Log("Bringing " + panel.Name + " to front.", "UI", false);
-            Invoke(new Action(() => panel.BringToFront())); //bring current mode's panel to front
-            if (LabelLastAction.Text != "")
-                Invoke(new Action(() => SetLastAction(Color.Green, "")));
-        }
-
-        private void SetLastAction(Color color, string text)
-        {
-            LabelLastAction.ForeColor = color;
-            LabelLastAction.Text = text;
-        }
-
-        private void UpdateLabels(Panel panel)
-        {
-            List<Label> labels = new List<Label>();
-            //i hate how much work is needed for this special case but I can't be bothered to figure out a better way
-            //ultimate goal here is getting a collection of all of the labels for the current panel, for iteration
-            if (panel.Name == "MainPanelItems")
-            {
-                foreach(Control control in panel.Controls)
-                {
-                    if (control.Name.Contains("Label"))
-                        labels.Add((Label)control);
-                }
-            }
-            else
-            {
-                Panel labelPanel = (Panel)panel.Controls.Find(panel.Name.Substring(4) + "Label", true)[0];
-                foreach(Label label in labelPanel.Controls)
-                {
-                    labels.Add(label);
-                }
-            }
-
-            foreach (Label label in labels)
-            {
-                List<string> keys = new List<string>(labelLookup.Keys);
-                foreach (string key in keys)
-                {
-                    if ("Label" + key == label.Name)
-                    {
-                        string valueType = pointerTypes[keys.FindIndex(findKey => findKey == key)];
-                        if (valueType == "float")
-                        {
-                            float value = memory.ReadFloat(GetPointer(key));
-                            Invoke(new Action(() => label.Text = labelLookup[key] + value));
-                            break;
-                        }
-                        else if (valueType == "uint")
-                        {
-                            uint value = memory.ReadUInt(GetPointer(key));
-                            Invoke(new Action(() => label.Text = labelLookup[key] + value));
-                            break;
-                        }
-                        else if (valueType == "int")
-                        {
-                            int value = memory.ReadInt(GetPointer(key));
-                            Invoke(new Action(() => label.Text = labelLookup[key] + value));
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
-        private void ToggleFreeze(object sender, EventArgs e)
-        {
-            CheckBox checkBox = (CheckBox)sender;
-            string pointerName = checkBox.Name.Substring(5);
-            if (checkBox.Checked)
-            {
-                TextBox textBox = textBoxes.Find(text => text.Name == "Text" + pointerName);
-                string type = pointerTypes[pointerNames.IndexOf(pointerName)];
-                string value = textBox.Text;
-                if (value == "")
-                {
-                    if (type == "float")
-                        value = memory.ReadFloat(GetPointer(pointerName)).ToString();
-                    else if (type == "int")
-                        value = memory.ReadInt(GetPointer(pointerName)).ToString();
-                    else if (type == "uint")
-                        value = memory.ReadUInt(GetPointer(pointerName)).ToString();
-                    Log("Empty text box - freezing current value (" + value + ") to " + pointerName + ".", "FREEZE", false);
-                    memory.FreezeValue(GetPointer(pointerName), type, value);
-                    Invoke(new Action(() => SetLastAction(Color.Green, "Froze " + value + " to " + pointerName + ".")));
-                }
-                else
-                {
-                    bool success = true;
-                    if (type == "int" && !int.TryParse(textBox.Text, out int outInt))
-                        success = false;
-                    else if (type == "float" && !float.TryParse(textBox.Text, out float outFloat))
-                        success = false;
-
-                    if (success)
-                    {
-                        Log("Freezing value " + value + " to " + pointerName + ".", "FREEZE", false);
-                        memory.FreezeValue(GetPointer(pointerName), type, textBox.Text);
-                        Invoke(new Action(() => SetLastAction(Color.Green, "Froze " + value + " to " + pointerName + ".")));
-                    }
-                    else
-                    {
-                        Log("Error freezing value " + value + " to " + pointerName + " - wrong type!", "WARNING", false);
-                        Invoke(new Action(() => SetLastAction(Color.Red, "Can't freeze " + value + " to " + pointerName + " - wrong type!")));
-                        Invoke(new Action(() => checkBox.Checked = false));
-                    }
-                }
-            }
-            else
-            {
-                Log("Unfreezing " + pointerName, "FREEZE", false);
-                memory.UnfreezeValue(GetPointer(pointerName));
-                Invoke(new Action(() => SetLastAction(Color.Green, "Unfroze " + pointerName + ".")));
-            }
-        }
-
-        private void SetValue(object sender, EventArgs e)
-        {
-            string name = ((Button)sender).Name.Substring(6);
-            string value = textBoxes.Find(boxName => boxName.Name == "Text" + name).Text;
-            if (value == "")
-            {
-                Log("Error setting value - empty text box!", "WARNING", false);
-                Invoke(new Action(() => SetLastAction(Color.Red, "Can't set value - need a value in the text box!")));
-                return;
-            }
-            try
-            {
-                Log("Writing " + value + " to " + name + ".", "SET VALUE", false);
-                memory.WriteMemory(GetPointer(name), pointerTypes[pointerNames.IndexOf(name)], value);
-                Invoke(new Action(() => SetLastAction(Color.Green, "Set " + name + " to " + value + ".")));
-            }
-            catch (FormatException)
-            {
-                Log("Error writing " + value + " to " + name + " - wrong type!", "WARNING", false);
-                Invoke(new Action(() => SetLastAction(Color.Red, "Can't set value - wrong type!")));
-            }
-        }
-
-        private void Form1_Shown(object sender, EventArgs e)
-        {
-            worker.RunWorkerAsync();
-        }
-
-        private void WorkerProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            //update game status label if not already updated to current status
-            if (processOpen && LabelGameStatus.Text != "Game Status: Open!")
-            {
-                LabelGameStatus.ForeColor = Color.Green;
-                LabelGameStatus.Text = "Game Status: Open!";
-            }
-            else if (!processOpen && LabelGameStatus.Text != "Game Status: Closed!")
-            {
-                LabelGameStatus.ForeColor = Color.Red;
-                LabelGameStatus.Text = "Game Status: Closed!";
-            }
-        }
-
-        private void WorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            worker.RunWorkerAsync();
-        }
-
+        /// <summary>
+        /// Logs a message generated by the trainer. Can be changed such that only important messages are
+        /// logged, or to have every generated message logged.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="category"></param>
+        /// <param name="verboseMessage"></param>
         private void Log(string message, string category, bool verboseMessage)
         {
-            if (!verboseLogging && verboseMessage) //return if this is a verbose message and verbose is off
+            if (!verboseLogging && verboseMessage)
                 return;
-
-            if (logWriter == null) //set logWriter if it hasn't already been set
-                logWriter = new StreamWriter("log.txt");
 
             string timestamp = DateTime.Now.ToString("[HH:mm:ss] ");
             logWriter.WriteLine(timestamp + category + ": " + message);
             logWriter.Flush();
         }
 
+        /// <summary>
+        /// Reads user-defined settings from App.config (mostly hotkeys)
+        /// </summary>
+        private void ReadAppSettings()
+        {
+            //timer interval + logging
+            Log("Loading App.config settings...", "SETUP", false);
+            updateTime = int.Parse(ConfigurationManager.AppSettings.Get("UpdateTime"));
+            appTimer.Interval = updateTime;
+            Log("updateTime set to " + updateTime + ".", "SETUP", true);
+            verboseLogging = bool.Parse(ConfigurationManager.AppSettings.Get("VerboseLogging"));
+            Log("verbose set to " + verboseLogging + ".", "SETUP", true);
+
+            XSpeed = float.Parse(ConfigurationManager.AppSettings.Get("XSpeed"));
+            Log("XSpeed set to " + XSpeed + ".", "SETUP", true);
+            YSpeed = float.Parse(ConfigurationManager.AppSettings.Get("YSpeed"));
+            Log("YSpeed set to " + XSpeed + ".", "SETUP", true);
+            ZSpeed = float.Parse(ConfigurationManager.AppSettings.Get("ZSpeed"));
+            Log("ZSpeed set to " + XSpeed + ".", "SETUP", true);
+
+            for (int i = 0; i < hotkeyNameList.Count; ++i)
+            {
+                customHotkeyList.Add(ConfigurationManager.AppSettings.Get(hotkeyNameList[i]));
+                Log(hotkeyNameList[i] + " set to " + customHotkeyList[i] + ".", "SETUP", true);
+            }
+
+            //Verify that all entered hotkeys are valid, set to N/A if not
+            for (int i = 0; i < customHotkeyList.Count; ++i)
+            {
+                if (!keysList.Any(key => key.ToString() == customHotkeyList[i]))
+                {
+                    Log("Couldn't match hotkey " + customHotkeyList[i] + " to a keyboard key. This hotkey will not " +
+                        "work. Check App.config and change to a valid key.", "WARNING", false);
+                    customHotkeyList[i] = "N/A";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads resource files (.txt) and App Settings (app.config) for information such as pointers and hotkeys.
+        /// </summary>
+        private void ReadResourceFiles()
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+
+            //pointers.txt: pointer types, names, addresses
+            Log("Loading resource files...", "SETUP", false);
+            Log("Reading pointers.txt.", "SETUP", true);
+            List<string> lines = GetLines(asm, "pointers.txt");
+            foreach (string line in lines)
+            {
+                string[] split = line.Split(' ');
+                pointerTypes.Add(split[0]);
+                pointerNames.Add(split[1]);
+                pointerAddresses.Add(split[2]);
+            }
+
+            //music_titles.txt: lists of music titles in order of category
+            Log("Reading music_titles.txt.", "SETUP", true);
+            lines = GetLines(asm, "music_titles.txt");
+            for (int i = 0; i < lines.Count; ++i)
+            {
+                List<string> newList = new List<string>(lines[i].Split(' ')); //parse each line into list of titles
+                musicTitles.Add(newList);
+            }
+
+            //music_strings.txt: pairs of <music title, UI text>
+            Log("Reading music_strings.txt.", "SETUP", true);
+            lines = GetLines(asm, "music_strings.txt");
+            foreach (string line in lines)
+            {
+                string[] split = line.Split(' ');
+                musicTitleStrings.Add(split[0], split[1].Replace('_', ' '));
+            }
+
+            //UI_text.txt: pairs of <address name, UI text>
+            Log("Reading UI_text.txt.", "SETUP", true);
+            lines = GetLines(asm, "UI_text.txt");
+            for (int i = 0; i < lines.Count; ++i)
+                addressLabelStrings.Add(pointerNames[i], lines[i]);
+
+            //state_strings.txt: pairs of <character state, UI text>
+            Log("Reading state_strings.txt.", "SETUP", true);
+            lines = GetLines(asm, "state_strings.txt");
+            foreach (string line in lines)
+            {
+                string[] split = line.Split(' ');
+                characterStateStrings.Add(int.Parse(split[0]), split[1].Replace('_', ' '));
+            }
+
+            //help_texts.txt: help texts for buttons
+            Log("Reading help_texts.txt.", "SETUP", true);
+            helpTexts = GetLines(asm, "help_texts.txt");
+        }
+
+        /// <summary>
+        /// Takes in a file name and returns the contents in list format.
+        /// </summary>
+        /// <param name="asm"></param>
+        /// <param name="file"></param>
+        /// <returns>List of lines from given file.</returns>
+        private List<string> GetLines(Assembly asm, string file)
+        {
+            StreamReader reader = new StreamReader(asm.GetManifestResourceStream("TyTrainer.Resources." + file));
+            List<string> lines = new List<string>();
+            while (!reader.EndOfStream)
+                lines.Add(reader.ReadLine());
+            return lines;
+        }
+
+        /// <summary>
+        /// Helper method that simplifies the act of getting a pointer address given a pointer name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>The pointer address associated to the given pointer name.</returns>
+        private string GetPointer(string name)
+        {
+            if (pointerNames.IndexOf(name) != -1)
+                return pointerAddresses[pointerNames.IndexOf(name)]; //returns pointer address given a pointer name
+            else
+                return "";
+        }
+
+        /// <summary>
+        /// Runs every time the timer interval is reached - this is the main logic loop of the program, 
+        /// handling UI updates.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TimerTick(object sender, EventArgs e)
+        {
+            CheckTitle();
+            bool gameOpen = memory.OpenProcess("Ty2");
+            if (!gameOpen)
+            {
+                Log("Ty2 is not open. Waiting 5 seconds and trying again.", "WARNING", false);
+                loggedGameStatus = false;
+                appTimer.Interval = 5000; //set timer for 5 seconds
+                UpdateStatus(gameOpen);
+                currentMode = "Closed";
+                //LabelCurrentArea.Text = "Current Area: Game Closed!";
+                if (frontPanel.Name != "MainPanelClosed")
+                    UpdateUI((Panel)this.Controls.Find("MainPanelClosed", false)[0]);
+                return;
+            }
+            else if (gameOpen && !loggedGameStatus)
+            {
+                Log("Ty2.exe opened.", "INFO", false);
+                loggedGameStatus = true;
+                appTimer.Interval = updateTime; //reset timer to user-defined time
+            }
+
+            if (GetMode())
+                UpdateUI((Panel)this.Controls.Find("MainPanel" + currentMode, false)[0]);
+
+            UpdateAreaState();
+            UpdateLabels();
+            UpdateStatus(gameOpen); //report progress to update closed/open status
+        }
+
+        /// <summary>
+        /// Checks if Ty 2 is currently in focus or not, and registers/unregisters hotkeys as needed. This
+        /// is necessary for users to be able to use their hotkey keys normally when not currently in-game.
+        /// </summary>
+        private void CheckTitle()
+        {
+            if (GetActiveWindowTitle(gameName) && !hotkeysEnabled)
+            {
+                RegisterKeys();
+                hotkeysEnabled = true;
+                Log("Hotkeys registered (game in focus).", "INFO", true);
+            }
+            else if (!GetActiveWindowTitle(gameName) && hotkeysEnabled)
+            {
+                for (int i = 0; i < hotkeyNameList.Count; ++i)
+                    UnregisterHotKey(this.Handle, i);
+                hotkeysEnabled = false;
+                Log("Hotkeys unregistered (game out of focus).", "INFO", true);
+            }
+        }
+
+        /// <summary>
+        /// Retrieves the currently active window title and compares it with the given name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>True if the currently active window title matches the given name, false otherwise.</returns>
+        private bool GetActiveWindowTitle(string name)
+        {
+            [DllImport("user32.dll")]
+            static extern IntPtr GetForegroundWindow();
+
+            [DllImport("user32.dll")]
+            static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int count);
+
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            IntPtr handle = GetForegroundWindow();
+
+            if (GetWindowText(handle, Buff, nChars) > 0)
+                return Buff.ToString() == name;
+            return false;
+        }
+
+        /// <summary>
+        /// Registers all of the hotkeys set by the user from App.config.
+        /// </summary>
+        private void RegisterKeys()
+        {
+            for (int i = 0; i < hotkeyNameList.Count; ++i)
+            {
+                string currentKey = customHotkeyList[i];
+                if(currentKey == "N/A")
+                {
+                    Log("Not registering N/A hotkey.", "WARNING", true);
+                    continue;
+                }
+                else
+                {
+                    int keyCode = (int)keysList.Find(key => key.ToString() == currentKey);
+                    RegisterHotKey(this.Handle, i, 0x0000, keyCode);
+                    Log("Registered hotkey (" + currentKey + ").", "INFO", true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates game status label (open/closed).
+        /// </summary>
+        private void UpdateStatus(bool gameOpen)
+        {
+            if (gameOpen)
+            {
+                LabelGameStatus.ForeColor = Color.Green;
+                LabelGameStatus.Text = "Game Status: Open!";
+            }
+            else
+            {
+                LabelGameStatus.ForeColor = Color.Red;
+                LabelGameStatus.Text = "Game Status: Closed!";
+            }
+        }
+
+        /// <summary>
+        /// Checks if the mode or music title has changed since last timer tick. Used to determine if 
+        /// the UI needs updating.
+        /// </summary>
+        /// <returns>True if mode has changed, false if mode did not change.</returns>
+        private bool GetMode()
+        {
+            string oldMusic = currentMusicTitle, oldMode = currentMode;
+            string currMusic = memory.ReadString(GetPointer("CurrentMusicTitle")).ToLower();
+            if (currMusic != "missionsucceed" && currMusic != "missionfail")
+                currentMusicTitle = currMusic;
+            bool musicFound = false;
+
+            //Check each category of music titles for matches of currentMusicTitle
+            for (int i = 0; i < musicTitles.Count; ++i)
+            {
+                if (musicTitles[i].IndexOf(currentMusicTitle) != -1) //if not found
+                {
+                    if (i == 9) //TyBunyip
+                        currentMode = memory.ReadInt(GetPointer("CharacterState")) == 0 ? "Ty" : "Bunyip";
+                    else if (i == 10) //TyTruck
+                        currentMode = memory.ReadInt(GetPointer("CharacterState")) == 0 ? "Ty" : "Truck";
+                    else
+                        currentMode = modes[i];
+                    musicFound = true;
+                    break;
+                }
+            }
+
+            if (memory.ReadInt(GetPointer("GamePaused")) == 1)
+                currentMode = "Items";
+
+            if (memory.ReadInt(GetPointer("GameLoading")) == 1)
+                currentMode = "Loading";
+
+            if (!musicFound)
+                currentMode = "Unknown";
+
+            if (oldMode != currentMode)
+                Log("Mode changed to " + currentMode + ".", "GAME", true);
+
+            if (oldMusic != currentMusicTitle && oldMusic != "" && currentMusicTitle != "")
+                Log("Music changed to " + musicTitleStrings[currentMusicTitle] + ".", "GAME", true);
+
+            return oldMode != currentMode;
+        }
+
+        /// <summary>
+        /// Updates the "Current Area" and "Character State" label swith the current location/state of the player in-game.
+        /// </summary>
+        private void UpdateAreaState()
+        {
+            if (musicTitleStrings.ContainsKey(currentMusicTitle))
+                LabelCurrentArea.Text = "Current Area: " + musicTitleStrings[currentMusicTitle];
+            else
+                LabelCurrentArea.Text = "Current Area: Unknown";
+
+            string state = characterStateStrings[memory.ReadInt(GetPointer("CharacterState"))];
+            LabelCharacterState.Text = "Character State: " + state;
+        }
+
+        /// <summary>
+        /// Updates the UI by bringing different panels to the front, if needed.
+        /// </summary>
+        /// <param name="panel"></param>
+        private void UpdateUI(Panel panel)
+        {
+            if (currentMode != "Items" && frontPanel.Name != "MainPanelStartup")
+            {
+                //Unfreeze and reset textboxes for clean swapping between modes
+                foreach (CheckBox checkBox in frontPanel.GetAllNestedControls().OfType<CheckBox>().Where(check => check.Checked))
+                {
+                    string name = checkBox.Name.Substring(5);
+                    Log("Unfreezing " + name + ".", "FREEZE", false);
+                    checkBox.Checked = false;
+                    memory.UnfreezeValue(GetPointer(checkBox.Name.Substring(5)));
+                }
+
+                foreach (TextBox textBox in frontPanel.GetAllNestedControls().OfType<TextBox>())
+                    textBox.Text = "";
+            }
+            Log("Bringing " + panel.Name + " to front.", "UI", false);
+            panel.BringToFront();
+            frontPanel = panel;
+            SetLastAction(Color.Green, "");
+        }
+
+        /// <summary>
+        /// Changes the LastAction label to the given color and text value.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="text"></param>
+        private void SetLastAction(Color color, string text)
+        {
+            LabelLastAction.ForeColor = color;
+            LabelLastAction.Text = text;
+        }
+
+        /// <summary>
+        /// Updates all of the labels that are currently displaying. This only runs if the game 
+        /// is in focus, to save resources.
+        /// </summary>
+        private void UpdateLabels()
+        {
+            if (!GetActiveWindowTitle(gameName))
+                return;
+
+            foreach (Label label in frontPanel.GetAllNestedControls().OfType<Label>())
+            {
+                if (label.Name.Contains("EffectiveSpeed"))
+                {
+                    double xSpeed = memory.ReadFloat(GetPointer(currentMode + "XSpeed"));
+                    double zSpeed = memory.ReadFloat(GetPointer(currentMode + "ZSpeed"));
+                    double speed = Math.Sqrt(Math.Pow(xSpeed, 2) + Math.Pow(zSpeed, 2));
+                    label.Text = "Effective Speed: " + speed.ToString("0.000");
+                    continue;
+                }
+                else
+                {
+                    string key = label.Name.Substring(5), valueType = "";
+                    if(pointerNames.FindIndex(findKey => findKey == key) != -1)
+                        valueType = pointerTypes[pointerNames.FindIndex(findKey => findKey == key)];
+
+                    if (valueType == "float")
+                    {
+                        float value = memory.ReadFloat(GetPointer(key));
+                        label.Text = addressLabelStrings[key] + value;
+                    }
+                    else if (valueType == "int")
+                    {
+                        int value = memory.ReadInt(GetPointer(key));
+                        label.Text = addressLabelStrings[key] + value;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Override of WndProc that specifies how to handle hotkey events based on the ID of the
+        /// hotkey that was pressed by the user.
+        /// </summary>
+        /// <param name="m"></param>
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == 0x0312 && GetActiveWindowTitle(gameName))
+            {
+                if (m.WParam.ToInt32() < 6)
+                    AdjustValue(m.WParam.ToInt32());
+                else if (m.WParam.ToInt32() == 6)
+                    DisplayStoredPosition(this, EventArgs.Empty);
+                else if (m.WParam.ToInt32() == 7)
+                    UpdateStoredPosition(this, EventArgs.Empty);
+                else if (m.WParam.ToInt32() == 8)
+                    Teleport(this, EventArgs.Empty);
+            }
+
+            base.WndProc(ref m);
+        }
+
+        /// <summary>
+        /// Adjusts the player's X/Y/Z position by the amount specified in App.config. Triggered by hotkeys.
+        /// </summary>
+        /// <param name="id"></param>
+        private void AdjustValue(int id)
+        {
+            CheckXYZ("Can't use hotkey - no X/Y/Z value is showing!");
+            Dictionary<int, string> idLookup = new Dictionary<int, string>()
+            {
+                { 0, "X" }, { 1, "X" }, { 2, "Y" }, { 3, "Y" }, { 4, "Z" }, { 5, "Z" }
+            };
+            string type = idLookup[id];
+            float speed = 0, value;
+
+            if (type == "X")
+                speed = XSpeed;
+            else if (type == "Y")
+                speed = YSpeed;
+            else if (type == "Z")
+                speed = ZSpeed;
+
+            if (id % 2 == 0) //even ids are "Less", odd ids are "More"
+                value = memory.ReadFloat(GetPointer(currentMode + type)) - speed;
+            else
+                value = memory.ReadFloat(GetPointer(currentMode + type)) + speed;
+
+            memory.WriteMemory(GetPointer(currentMode + type), "float", value.ToString());
+        }
+
+        /// <summary>
+        /// Displays the currently stored position used for teleporting the player.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DisplayStoredPosition(object sender, EventArgs e)
+        {
+            SetLastAction(Color.Green, "Stored position: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ + ".");
+        }
+
+        /// <summary>
+        /// Checks whether a valid panel is visible (one with XYZ values displaying), used before running
+        /// methods that deal with setting or teleporting positions.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        private bool CheckXYZ(string message)
+        {
+            string[] noXYZ = { "Cutscene", "Items", "Other", "Unknown", "Closed", "Loading" };
+            if (Array.IndexOf(noXYZ, currentMode) != -1)
+            {
+                SetLastAction(Color.Red, message);
+                return false;
+            }
+            return true;
+
+        }
+
+        /// <summary>
+        /// Sets/updates the stored XYZ position used for teleporting.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void UpdateStoredPosition(object sender, EventArgs e)
+        {
+            if (!CheckXYZ("Can't set position unless X/Y/Z coordinates are displaying!"))
+                return;
+
+            teleportX = memory.ReadFloat(GetPointer(currentMode + "X"));
+            teleportY = memory.ReadFloat(GetPointer(currentMode + "Y"));
+            teleportZ = memory.ReadFloat(GetPointer(currentMode + "Z"));
+
+            Log("Set position: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ + ".", "SET VALUE", false);
+            SetLastAction(Color.Green, "Set position: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ + ".");
+        }
+
+        /// <summary>
+        /// Teleports the player to the stored XYZ position.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Teleport(object sender, EventArgs e)
+        {
+            if (!CheckXYZ("Can't teleport unless X/Y/Z coordinates are displaying!"))
+                return;
+
+            memory.WriteMemory(GetPointer(currentMode + "X"), "float", teleportX.ToString());
+            memory.WriteMemory(GetPointer(currentMode + "Y"), "float", teleportY.ToString());
+            memory.WriteMemory(GetPointer(currentMode + "Z"), "float", teleportZ.ToString());
+
+            Log("Teleported to: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ + ".", "TELEPORT", false);
+            SetLastAction(Color.Green, "Teleported to: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ);
+        }
+
+        /// <summary>
+        /// Opens a help window that contains information about the value the clicked help button is
+        /// associated with.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OpenHelp(object sender, EventArgs e)
         {
-            if (((Button)sender).Name == "HelpDisplayItems")
-            {
-                Form helpWindow = new HelpWindow("Item Display", "int", helpTexts[helpTexts.Count - 1]);
-                helpWindow.Show();
-                Log("Help button for Item Display was triggered.", "HELP", false);
-            }
-            else if (((Button)sender).Name == "HelpInfiniteJump")
-            {
-                Form helpWindow = new HelpWindow("TyGroundedState (Infinite Jump)", "int/boolean", helpTexts[pointerNames.IndexOf("TyGroundedState")]);
-                helpWindow.StartPosition = this.StartPosition;
-                helpWindow.Show();
-                Log("Help button for Infinite Jump was triggered.", "HELP", false);
-            }
-            else
-            {
-                int index = pointerNames.IndexOf(((Button)sender).Name.Substring(4)); //this looks so ugly
-                Form helpWindow = new HelpWindow(pointerNames[index], pointerTypes[index], helpTexts[index]);
-                helpWindow.StartPosition = this.StartPosition;
-                helpWindow.Show();
-                Log("Help button for " + pointerNames[index] + " was triggered.", "HELP", false);
-            }
+            int index = pointerNames.IndexOf(((Button)sender).Name.Substring(4));
+            new HelpWindow(pointerNames[index], pointerTypes[index], helpTexts[index]).Show();
+            Log("Help button for " + pointerNames[index] + " was triggered.", "HELP", false);
         }
 
-        private void ShowItemTotals(object sender, EventArgs e)
+        /// <summary>
+        /// Pre-processing to ensure that either the Enter or Return key was pressed. Sends the text box's
+        /// contents into SetValue for further logic.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckEnterKey(object sender, KeyPressEventArgs e)
         {
-            if (!processOpen)
+            if (e.KeyChar == (char)Keys.Enter || e.KeyChar == (char)Keys.Return)
+                SetValue(((TextBox)sender).Text, ((Control)sender).Name.Substring(4));
+        }
+
+        /// <summary>
+        /// Checks if a valid value was entered into the text box, and if so, writes it to memory.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="name"></param>
+        private void SetValue(string value, string name)
+        {
+            if (value == "")
             {
-                Log("Can't display the item totals if the game is closed! Open the game and try again.", "WARNING", false);
-                Invoke(new Action(() => SetLastAction(Color.Red, "Can't display item totals when the game is closed!")));
-                ((CheckBox)sender).Checked = false;
+                Log("Error setting value - empty text box!", "WARNING", false);
+                SetLastAction(Color.Red, "Can't set value - need a value in the text box!");
+                return;
             }
-            else if (((CheckBox)sender).Checked)
+            try
             {
-                itemsShowing = true;
-                MainPanelItems.BringToFront();
+                Log("Writing " + value + " to " + name + ".", "SET VALUE", false);
+                memory.WriteMemory(GetPointer(name), pointerTypes[pointerNames.IndexOf(name)], value);
+                SetLastAction(Color.Green, "Set " + name + " to " + value + ".");
             }
-            else
+            catch (FormatException)
             {
-                itemsShowing = false;
-                mainPanels.Find(panel => panel.Parent.Controls.GetChildIndex(panel) == 1).BringToFront();
+                Log("Error writing " + value + " to " + name + " - wrong type!", "WARNING", false);
+                SetLastAction(Color.Red, "Can't set value - wrong type!");
             }
         }
 
+        /// <summary>
+        /// Toggles a feature (such as Infinite Jump or Infinite Swim).
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ToggleFeature(object sender, EventArgs e)
         {
-            CheckBox check = (CheckBox)sender;
-            string pointerName = check.Name.Substring(5);
-            if (check.Checked)
+            string pointerName = ((CheckBox)sender).Name.Substring(5);
+            if (((CheckBox)sender).Checked)
             {
                 Log(featureNames[pointerName] + " activated.", "FREEZE", false);
                 if (pointerName == "TyGroundedState")
                     memory.FreezeValue(GetPointer(pointerName), "int", "1");
                 else if (pointerName == "TySwimmingState")
                     memory.FreezeValue(GetPointer(pointerName), "int", "0");
-                Invoke(new Action(() => SetLastAction(Color.Green, "Activated " + featureNames[pointerName] + ".")));
+                SetLastAction(Color.Green, "Activated " + featureNames[pointerName] + ".");
             }
             else
             {
                 Log(featureNames[pointerName] + " deactivated.", "FREEZE", false);
                 memory.UnfreezeValue(GetPointer(pointerName));
-                Invoke(new Action(() => SetLastAction(Color.Green, "Deactivated " + featureNames[pointerName] + ".")));
+                SetLastAction(Color.Green, "Deactivated " + featureNames[pointerName] + ".");
+            }
+        }
+
+        /// <summary>
+        /// Freezes and unfreezes values when a CheckBox is clicked. When freezing, the current value will 
+        /// be frozen if there is nothing entered in the associated TextBox, otherwise the TextBox value 
+        /// will be validated and frozen.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ToggleFreeze(object sender, EventArgs e)
+        {
+            string pointerName = ((CheckBox)sender).Name.Substring(5);
+            if (!((CheckBox)sender).Checked) //unfreeze value
+            {
+                Log("Unfreezing " + pointerName, "FREEZE", false);
+                memory.UnfreezeValue(GetPointer(pointerName));
+                SetLastAction(Color.Green, "Unfroze " + pointerName + ".");
+                return;
+            }
+
+            TextBox textBox = (TextBox)frontPanel.Controls.Find("Text" + pointerName, true)[0];
+            string type = pointerTypes[pointerNames.IndexOf(pointerName)];
+            string value = textBox.Text;
+            if (value == "") //freeze current value
+            {
+                if (type == "float")
+                    value = memory.ReadFloat(GetPointer(pointerName)).ToString();
+                else if (type == "int")
+                    value = memory.ReadInt(GetPointer(pointerName)).ToString();
+                Log("Empty text box - freezing current value (" + value + ") to " + pointerName + ".", "FREEZE", false);
+                memory.FreezeValue(GetPointer(pointerName), type, value);
+                SetLastAction(Color.Green, "Froze " + value + " to " + pointerName + ".");
+            }
+            else //freeze value in TextBox
+            {
+                bool success = true;
+                if (type == "int" && !int.TryParse(textBox.Text, out _))
+                    success = false;
+                else if (type == "float" && !float.TryParse(textBox.Text, out _))
+                    success = false;
+
+                if (success)
+                {
+                    Log("Freezing value " + value + " to " + pointerName + ".", "FREEZE", false);
+                    memory.FreezeValue(GetPointer(pointerName), type, textBox.Text);
+                    SetLastAction(Color.Green, "Froze " + value + " to " + pointerName + ".");
+                }
+                else
+                {
+                    Log("Error freezing value " + value + " to " + pointerName + " - wrong type!", "WARNING", false);
+                    SetLastAction(Color.Red, "Can't freeze " + value + " to " + pointerName + " - wrong type!");
+                    ((CheckBox)sender).Checked = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Opens the Info Window, which displays Hotkey information as well as support information 
+        /// (my Discord tag, GitHub link, etc.)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OpenInfoWindow(object sender, EventArgs e)
+        {
+            string text = "";
+            for(int i = 0; i < customHotkeyList.Count; ++i)
+            {
+                text += hotkeyNameList[i] + ": " + customHotkeyList[i] + "\r\n";
+            }
+            new InfoWindow(text).Show();
+        }
+
+        /// <summary>
+        /// Before closing, this method is triggered to ensure hotkeys are unregistered. In theory, it 
+        /// should be impossible for hotkeys to still be registered when closing the trainer, but this 
+        /// makes sure of it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CloseTasks(object sender, FormClosingEventArgs e)
+        {
+            for (int i = 0; i < hotkeyNameList.Count; ++i)
+                UnregisterHotKey(this.Handle, i);
+        }
+
+        /// <summary>
+        /// On trainer startup, this immediately starts the timer so there's no delay in processing game
+        /// information.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+            appTimer.Start();
+        }
+    }
+}
+
+namespace ControlExtension
+{
+    public static class ControlExtensions
+    {
+        public static IEnumerable<Control> GetAllNestedControls(this Control parent)
+        {
+            var stack = new Stack<Control>();
+            foreach (Control child in parent.Controls)
+                stack.Push(child);
+
+            while (stack.Count > 0)
+            {
+                var control = stack.Pop();
+                yield return control;
+
+                foreach (Control child in control.Controls)
+                    stack.Push(child);
             }
         }
     }

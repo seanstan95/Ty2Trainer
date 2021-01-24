@@ -1,41 +1,58 @@
-Bilby (Bottom): 
-Bilby (Top): 
+Bilby Bottom: 
+Bilby Top: 
 Bunyip Health (Visual): 
 Bunyip X: 
+Bunyip X Speed: 
 Bunyip Y: 
+Bunyip Y Speed: 
 Bunyip Z: 
+Bunyip Z Speed: 
 Character State: 
-Cogs (Bottom): 
-Cogs (Top): 
-Current Music Title: 
+Cog Bottom: 
+Cog Top: 
+placeholder for current music title
+placeholder for game loading
+placeholder for game paused
 Heli Health (Visual): 
 Heli X: 
+Heli X Speed: 
 Heli Y: 
+Heli Y Speed: 
 Heli Z: 
+Heli Z Speed: 
 Kart X: 
+Kart X Speed: 
 Kart Y: 
+Kart Y Speed: 
 Kart Z: 
-Orbs (Bottom): 
-Orbs (Top): 
-Photos (Bottom): 
-Photos (Top): 
-Spies (Bottom): 
-Spies (Top): 
-Steve (Bottom): 
-Steve (Top): 
+Kart Z Speed: 
+Orb Bottom: 
+Orb Top: 
+Photo Bottom: 
+Photo Top: 
+Spy Bottom: 
+Spy Top: 
+Steve Bottom: 
+Steve Top: 
 Sub Health (Visual): 
 Sub X: 
+Sub X Speed: 
 Sub Y: 
+Sub Y Speed: 
 Sub Z: 
+Sub Z Speed: 
 Truck Health (Internal): 
 Truck Health (Visual): 
 Truck X: 
+Truck X Speed: 
 Truck Y: 
+Truck Y Speed: 
 Truck Z: 
-Ty Grounded State: 
+Truck Z Speed: 
+placeholder for ty grounded state
 Ty Health: 
-Ty Horizontal Speed: 
-Ty Swimming State: 
+Ty Speed Cap: 
+placeholder for ty swimming state
 Ty X: 
 Ty X Speed: 
 Ty Y: 

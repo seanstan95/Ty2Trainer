@@ -31,9 +31,9 @@ namespace TyTrainer
         {
             this.DataType = new System.Windows.Forms.Label();
             this.HelpName = new System.Windows.Forms.Label();
-            this.Information = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel1.SuspendLayout();
+            this.LabelInformation = new System.Windows.Forms.Label();
+            this.PanelInformation = new System.Windows.Forms.Panel();
+            this.PanelInformation.SuspendLayout();
             this.SuspendLayout();
             // 
             // DataType
@@ -56,39 +56,39 @@ namespace TyTrainer
             this.HelpName.TabIndex = 1;
             this.HelpName.Text = "NAME: ";
             // 
-            // Information
+            // LabelInformation
             // 
-            this.Information.AutoSize = true;
-            this.Information.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Information.Location = new System.Drawing.Point(0, 2);
-            this.Information.MaximumSize = new System.Drawing.Size(435, 0);
-            this.Information.Name = "Information";
-            this.Information.Size = new System.Drawing.Size(432, 75);
-            this.Information.TabIndex = 2;
-            this.Information.Text = "INFORMATION: this help text is to see what happens if I type a lot in here, let\'s" +
+            this.LabelInformation.AutoSize = true;
+            this.LabelInformation.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelInformation.Location = new System.Drawing.Point(0, 2);
+            this.LabelInformation.MaximumSize = new System.Drawing.Size(435, 0);
+            this.LabelInformation.Name = "LabelInformation";
+            this.LabelInformation.Size = new System.Drawing.Size(432, 75);
+            this.LabelInformation.TabIndex = 2;
+            this.LabelInformation.Text = "INFORMATION: this help text is to see what happens if I type a lot in here, let\'s" +
     " type more and see what happens, lorem ipsum etc. etc.";
             // 
-            // panel1
+            // PanelInformation
             // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.Information);
-            this.panel1.Location = new System.Drawing.Point(12, 75);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(456, 149);
-            this.panel1.TabIndex = 3;
+            this.PanelInformation.AutoScroll = true;
+            this.PanelInformation.Controls.Add(this.LabelInformation);
+            this.PanelInformation.Location = new System.Drawing.Point(12, 75);
+            this.PanelInformation.Name = "PanelInformation";
+            this.PanelInformation.Size = new System.Drawing.Size(456, 149);
+            this.PanelInformation.TabIndex = 3;
             // 
             // HelpWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 236);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.PanelInformation);
             this.Controls.Add(this.DataType);
             this.Controls.Add(this.HelpName);
             this.Name = "HelpWindow";
             this.Text = "Help";
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.PanelInformation.ResumeLayout(false);
+            this.PanelInformation.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,7 +98,7 @@ namespace TyTrainer
 
         private System.Windows.Forms.Label DataType;
         private System.Windows.Forms.Label HelpName;
-        private System.Windows.Forms.Label Information;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label LabelInformation;
+        private System.Windows.Forms.Panel PanelInformation;
     }
 }
