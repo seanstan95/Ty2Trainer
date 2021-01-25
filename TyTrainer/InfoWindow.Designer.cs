@@ -30,8 +30,8 @@ namespace TyTrainer
         private void InitializeComponent()
         {
             this.PanelInformation = new System.Windows.Forms.Panel();
-            this.LabelSupportInfo = new System.Windows.Forms.LinkLabel();
             this.LabelHotkey = new System.Windows.Forms.Label();
+            this.LabelSupportInfo = new System.Windows.Forms.LinkLabel();
             this.PanelInformation.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -45,20 +45,6 @@ namespace TyTrainer
             this.PanelInformation.Size = new System.Drawing.Size(460, 337);
             this.PanelInformation.TabIndex = 0;
             // 
-            // LabelSupportInfo
-            // 
-            this.LabelSupportInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelSupportInfo.LinkArea = new System.Windows.Forms.LinkArea(84, 40);
-            this.LabelSupportInfo.Location = new System.Drawing.Point(5, 0);
-            this.LabelSupportInfo.Name = "LabelSupportInfo";
-            this.LabelSupportInfo.Size = new System.Drawing.Size(419, 120);
-            this.LabelSupportInfo.TabIndex = 1;
-            this.LabelSupportInfo.TabStop = true;
-            this.LabelSupportInfo.Text = "Support Information:\r\nCreator: PhoenixAki\r\nDiscord Tag: Phoenix#0353\r\nGitHub Link" +
-    ":\r\nhttps://github.com/PhoenixAki/Ty2Trainer";
-            this.LabelSupportInfo.UseCompatibleTextRendering = true;
-            this.LabelSupportInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OpenLink);
-            // 
             // LabelHotkey
             // 
             this.LabelHotkey.AutoSize = true;
@@ -68,6 +54,20 @@ namespace TyTrainer
             this.LabelHotkey.Size = new System.Drawing.Size(114, 25);
             this.LabelHotkey.TabIndex = 2;
             this.LabelHotkey.Text = "Hotkey List:";
+            // 
+            // LabelSupportInfo
+            // 
+            this.LabelSupportInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LabelSupportInfo.LinkArea = new System.Windows.Forms.LinkArea(84, 40);
+            this.LabelSupportInfo.Location = new System.Drawing.Point(3, 5);
+            this.LabelSupportInfo.Name = "LabelSupportInfo";
+            this.LabelSupportInfo.Size = new System.Drawing.Size(419, 120);
+            this.LabelSupportInfo.TabIndex = 1;
+            this.LabelSupportInfo.TabStop = true;
+            this.LabelSupportInfo.Text = "Support Information:\r\nCreator: PhoenixAki\r\nDiscord Tag: Phoenix#0353\r\nGitHub Link" +
+    ":\r\nhttps://github.com/PhoenixAki/Ty2Trainer";
+            this.LabelSupportInfo.UseCompatibleTextRendering = true;
+            this.LabelSupportInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OpenLink);
             // 
             // InfoWindow
             // 

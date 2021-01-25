@@ -27,6 +27,7 @@ Internally, the trainer also uses the values of *current music title* and *chara
 - Hotkey support for adjusting the player's current X/Y/Z position or for the buttons mentioned in the previous line
 - Button that displays general support information, and visualizes the hotkeys that were entered by the user.
 
+# Changelog
 ## Changes since v1.1.2
 **Bug Fixes**
 - Added support for the "mission fail" sound, which previously was unrecognized in the trainer.
@@ -50,6 +51,13 @@ Internally, the trainer also uses the values of *current music title* and *chara
 - Overhauled the skeleton of the code to use a Timer instead of a BackgroundWorker to handle the main trainer logic loop. Performance shouldn't be any different, but this simplified a lot of the logic in the code.
 - Added documentation strings prior to each method in the code, which should make the code much more readable and understandable for people beyond just me.
 - Too many additional tiny optimizations and improvements than would be possible to list here.
+
+## Changes since v1.2.0
+**Bug Fix**
+- Pointers for Heli/Sub X/Y/Z speed were broken. They are now working :)
+
+**Code Tweak**
+- Updated strings throughout the code to use interpolated strings instead; performance is unaffected, this just makes the code ever-so-slightly cleaner.
 
 ## Known Bugs
 - The Ty values appear on the Concept Art menu, which is a side-effect of the way I'm determining when to show which values. The concept art menu uses the same music as Outback Oasis, and I don't yet have a way to differentiate between them.

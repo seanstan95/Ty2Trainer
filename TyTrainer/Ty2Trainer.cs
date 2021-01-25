@@ -13,7 +13,6 @@ using System.Windows.Forms;
 
 namespace TyTrainer
 {
-
     public partial class Ty2Trainer : Form
     {
         //General Purpose
@@ -102,21 +101,21 @@ namespace TyTrainer
             Log("Loading App.config settings...", "SETUP", false);
             updateTime = int.Parse(ConfigurationManager.AppSettings.Get("UpdateTime"));
             appTimer.Interval = updateTime;
-            Log("updateTime set to " + updateTime + ".", "SETUP", true);
+            Log($"updateTime set to {updateTime}.", "SETUP", true);
             verboseLogging = bool.Parse(ConfigurationManager.AppSettings.Get("VerboseLogging"));
-            Log("verbose set to " + verboseLogging + ".", "SETUP", true);
+            Log($"verbose set to {verboseLogging}.", "SETUP", true);
 
             XSpeed = float.Parse(ConfigurationManager.AppSettings.Get("XSpeed"));
-            Log("XSpeed set to " + XSpeed + ".", "SETUP", true);
+            Log($"XSpeed set to {XSpeed}.", "SETUP", true);
             YSpeed = float.Parse(ConfigurationManager.AppSettings.Get("YSpeed"));
-            Log("YSpeed set to " + XSpeed + ".", "SETUP", true);
+            Log($"YSpeed set to {YSpeed}.", "SETUP", true);
             ZSpeed = float.Parse(ConfigurationManager.AppSettings.Get("ZSpeed"));
-            Log("ZSpeed set to " + XSpeed + ".", "SETUP", true);
+            Log($"ZSpeed set to {ZSpeed}.", "SETUP", true);
 
             for (int i = 0; i < hotkeyNameList.Count; ++i)
             {
                 customHotkeyList.Add(ConfigurationManager.AppSettings.Get(hotkeyNameList[i]));
-                Log(hotkeyNameList[i] + " set to " + customHotkeyList[i] + ".", "SETUP", true);
+                Log($"{hotkeyNameList[i]} set to {customHotkeyList[i]}.", "SETUP", true);
             }
 
             //Verify that all entered hotkeys are valid, set to N/A if not
@@ -124,7 +123,7 @@ namespace TyTrainer
             {
                 if (!keysList.Any(key => key.ToString() == customHotkeyList[i]))
                 {
-                    Log("Couldn't match hotkey " + customHotkeyList[i] + " to a keyboard key. This hotkey will not " +
+                    Log($"Couldn't match hotkey {customHotkeyList[i]} to a keyboard key. This hotkey will not " +
                         "work. Check App.config and change to a valid key.", "WARNING", false);
                     customHotkeyList[i] = "N/A";
                 }
@@ -313,7 +312,7 @@ namespace TyTrainer
                 {
                     int keyCode = (int)keysList.Find(key => key.ToString() == currentKey);
                     RegisterHotKey(this.Handle, i, 0x0000, keyCode);
-                    Log("Registered hotkey (" + currentKey + ").", "INFO", true);
+                    Log($"Registered hotkey ({currentKey}).", "INFO", true);
                 }
             }
         }
@@ -374,10 +373,10 @@ namespace TyTrainer
                 currentMode = "Unknown";
 
             if (oldMode != currentMode)
-                Log("Mode changed to " + currentMode + ".", "GAME", true);
+                Log($"Mode changed to {currentMode}.", "GAME", true);
 
             if (oldMusic != currentMusicTitle && oldMusic != "" && currentMusicTitle != "")
-                Log("Music changed to " + musicTitleStrings[currentMusicTitle] + ".", "GAME", true);
+                Log($"Music changed to {musicTitleStrings[currentMusicTitle]}.", "GAME", true);
 
             return oldMode != currentMode;
         }
@@ -388,7 +387,7 @@ namespace TyTrainer
         private void UpdateAreaState()
         {
             if (musicTitleStrings.ContainsKey(currentMusicTitle))
-                LabelCurrentArea.Text = "Current Area: " + musicTitleStrings[currentMusicTitle];
+                LabelCurrentArea.Text = $"Current Area: {musicTitleStrings[currentMusicTitle]}";
             else
                 LabelCurrentArea.Text = "Current Area: Unknown";
 
@@ -408,7 +407,7 @@ namespace TyTrainer
                 foreach (CheckBox checkBox in frontPanel.GetAllNestedControls().OfType<CheckBox>().Where(check => check.Checked))
                 {
                     string name = checkBox.Name.Substring(5);
-                    Log("Unfreezing " + name + ".", "FREEZE", false);
+                    Log($"Unfreezing {name}.", "FREEZE", false);
                     checkBox.Checked = false;
                     memory.UnfreezeValue(GetPointer(checkBox.Name.Substring(5)));
                 }
@@ -416,7 +415,7 @@ namespace TyTrainer
                 foreach (TextBox textBox in frontPanel.GetAllNestedControls().OfType<TextBox>())
                     textBox.Text = "";
             }
-            Log("Bringing " + panel.Name + " to front.", "UI", false);
+            Log($"Bringing {panel.Name} to front.", "UI", false);
             panel.BringToFront();
             frontPanel = panel;
             SetLastAction(Color.Green, "");
@@ -530,7 +529,7 @@ namespace TyTrainer
         /// <param name="e"></param>
         private void DisplayStoredPosition(object sender, EventArgs e)
         {
-            SetLastAction(Color.Green, "Stored position: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ + ".");
+            SetLastAction(Color.Green, $"Stored position: X={teleportX}, Y={teleportY}, Z={teleportZ}.");
         }
 
         /// <summary>
@@ -565,8 +564,8 @@ namespace TyTrainer
             teleportY = memory.ReadFloat(GetPointer(currentMode + "Y"));
             teleportZ = memory.ReadFloat(GetPointer(currentMode + "Z"));
 
-            Log("Set position: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ + ".", "SET VALUE", false);
-            SetLastAction(Color.Green, "Set position: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ + ".");
+            Log($"Set position: X={teleportX}, Y={teleportY}, Z={teleportZ}.", "SET VALUE", false);
+            SetLastAction(Color.Green, $"Set position: X={teleportX}, Y={teleportY}, Z={teleportZ}.");
         }
 
         /// <summary>
@@ -583,8 +582,8 @@ namespace TyTrainer
             memory.WriteMemory(GetPointer(currentMode + "Y"), "float", teleportY.ToString());
             memory.WriteMemory(GetPointer(currentMode + "Z"), "float", teleportZ.ToString());
 
-            Log("Teleported to: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ + ".", "TELEPORT", false);
-            SetLastAction(Color.Green, "Teleported to: X=" + teleportX + ", Y=" + teleportY + ", Z=" + teleportZ);
+            Log($"Teleported to: X={teleportX}, Y={teleportY}, Z={teleportZ}.", "TELEPORT", false);
+            SetLastAction(Color.Green, $"Teleported to: X={teleportX}, Y={teleportY}, Z={teleportZ}");
         }
 
         /// <summary>
@@ -597,7 +596,7 @@ namespace TyTrainer
         {
             int index = pointerNames.IndexOf(((Button)sender).Name.Substring(4));
             new HelpWindow(pointerNames[index], pointerTypes[index], helpTexts[index]).Show();
-            Log("Help button for " + pointerNames[index] + " was triggered.", "HELP", false);
+            Log($"Help button for {pointerNames[index]} was triggered.", "HELP", false);
         }
 
         /// <summary>
@@ -627,13 +626,13 @@ namespace TyTrainer
             }
             try
             {
-                Log("Writing " + value + " to " + name + ".", "SET VALUE", false);
+                Log($"Writing {value} to {name}.", "SET VALUE", false);
                 memory.WriteMemory(GetPointer(name), pointerTypes[pointerNames.IndexOf(name)], value);
-                SetLastAction(Color.Green, "Set " + name + " to " + value + ".");
+                SetLastAction(Color.Green, $"Set {name} to {value}.");
             }
             catch (FormatException)
             {
-                Log("Error writing " + value + " to " + name + " - wrong type!", "WARNING", false);
+                Log($"Error writing {value} to {name} - wrong type!", "WARNING", false);
                 SetLastAction(Color.Red, "Can't set value - wrong type!");
             }
         }
@@ -653,13 +652,13 @@ namespace TyTrainer
                     memory.FreezeValue(GetPointer(pointerName), "int", "1");
                 else if (pointerName == "TySwimmingState")
                     memory.FreezeValue(GetPointer(pointerName), "int", "0");
-                SetLastAction(Color.Green, "Activated " + featureNames[pointerName] + ".");
+                SetLastAction(Color.Green, $"Activated {featureNames[pointerName]}.");
             }
             else
             {
                 Log(featureNames[pointerName] + " deactivated.", "FREEZE", false);
                 memory.UnfreezeValue(GetPointer(pointerName));
-                SetLastAction(Color.Green, "Deactivated " + featureNames[pointerName] + ".");
+                SetLastAction(Color.Green, $"Deactivated {featureNames[pointerName]}.");
             }
         }
 
@@ -675,9 +674,9 @@ namespace TyTrainer
             string pointerName = ((CheckBox)sender).Name.Substring(5);
             if (!((CheckBox)sender).Checked) //unfreeze value
             {
-                Log("Unfreezing " + pointerName, "FREEZE", false);
+                Log($"Unfreezing {pointerName}.", "FREEZE", false);
                 memory.UnfreezeValue(GetPointer(pointerName));
-                SetLastAction(Color.Green, "Unfroze " + pointerName + ".");
+                SetLastAction(Color.Green, $"Unfroze {pointerName}.");
                 return;
             }
 
@@ -690,9 +689,9 @@ namespace TyTrainer
                     value = memory.ReadFloat(GetPointer(pointerName)).ToString();
                 else if (type == "int")
                     value = memory.ReadInt(GetPointer(pointerName)).ToString();
-                Log("Empty text box - freezing current value (" + value + ") to " + pointerName + ".", "FREEZE", false);
+                Log($"Empty text box - freezing current value ({value}) to {pointerName}.", "FREEZE", false);
                 memory.FreezeValue(GetPointer(pointerName), type, value);
-                SetLastAction(Color.Green, "Froze " + value + " to " + pointerName + ".");
+                SetLastAction(Color.Green, $"Froze {value} to {pointerName}.");
             }
             else //freeze value in TextBox
             {
@@ -704,14 +703,14 @@ namespace TyTrainer
 
                 if (success)
                 {
-                    Log("Freezing value " + value + " to " + pointerName + ".", "FREEZE", false);
+                    Log($"Freezing value {value} to {pointerName}.", "FREEZE", false);
                     memory.FreezeValue(GetPointer(pointerName), type, textBox.Text);
-                    SetLastAction(Color.Green, "Froze " + value + " to " + pointerName + ".");
+                    SetLastAction(Color.Green, $"Froze {value} to {pointerName}.");
                 }
                 else
                 {
-                    Log("Error freezing value " + value + " to " + pointerName + " - wrong type!", "WARNING", false);
-                    SetLastAction(Color.Red, "Can't freeze " + value + " to " + pointerName + " - wrong type!");
+                    Log($"Error freezing value {value} to {pointerName} - wrong type!", "WARNING", false);
+                    SetLastAction(Color.Red, $"Can't freeze {value} to {pointerName} - wrong type!");
                     ((CheckBox)sender).Checked = false;
                 }
             }
@@ -727,9 +726,7 @@ namespace TyTrainer
         {
             string text = "";
             for(int i = 0; i < customHotkeyList.Count; ++i)
-            {
                 text += hotkeyNameList[i] + ": " + customHotkeyList[i] + "\r\n";
-            }
             new InfoWindow(text).Show();
         }
 
