@@ -29,6 +29,7 @@ namespace TyTrainer
         string currentMode; //determines what UI display to use
         string currentMusicTitle = "";
         float teleportX, teleportY, teleportZ;
+        bool itemsShowing = false;
 
         //Information From Resource Files
         readonly List<string> pointerTypes = new List<string>();
@@ -249,7 +250,7 @@ namespace TyTrainer
 
             UpdateAreaState();
             UpdateLabels();
-            UpdateStatus(gameOpen); //report progress to update closed/open status
+            UpdateStatus(gameOpen); //update closed/open status
         }
 
         /// <summary>
@@ -347,6 +348,9 @@ namespace TyTrainer
                 currentMusicTitle = currMusic;
             bool musicFound = false;
 
+            if (currentMode == "Items")
+                return false; //return immediately if items are showing
+
             //Check each category of music titles for matches of currentMusicTitle
             for (int i = 0; i < musicTitles.Count; ++i)
             {
@@ -362,9 +366,6 @@ namespace TyTrainer
                     break;
                 }
             }
-
-            if (memory.ReadInt(GetPointer("GamePaused")) == 1)
-                currentMode = "Items";
 
             if (memory.ReadInt(GetPointer("GameLoading")) == 1)
                 currentMode = "Loading";
@@ -401,7 +402,7 @@ namespace TyTrainer
         /// <param name="panel"></param>
         private void UpdateUI(Panel panel)
         {
-            if (currentMode != "Items" && frontPanel.Name != "MainPanelStartup")
+            if (frontPanel.Name != "MainPanelItems" && frontPanel.Name != "MainPanelStartup")
             {
                 //Unfreeze and reset textboxes for clean swapping between modes
                 foreach (CheckBox checkBox in frontPanel.GetAllNestedControls().OfType<CheckBox>().Where(check => check.Checked))
@@ -635,6 +636,19 @@ namespace TyTrainer
                 Log($"Error writing {value} to {name} - wrong type!", "WARNING", false);
                 SetLastAction(Color.Red, "Can't set value - wrong type!");
             }
+        }
+
+        private void ToggleItems(object sender, EventArgs e)
+        {
+            CheckBox box = (CheckBox)sender;
+            if (box.Checked)
+            {
+                currentMode = "Items";
+                MainPanelItems.BringToFront();
+                frontPanel = MainPanelItems;
+            }
+            else
+                currentMode = "Unknown";
         }
 
         /// <summary>

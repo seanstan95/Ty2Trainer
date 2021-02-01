@@ -304,6 +304,7 @@ namespace TyTrainer
             this.MainPanelStartup = new System.Windows.Forms.Panel();
             this.LabelStartup = new System.Windows.Forms.Label();
             this.ButtonHotkeyInfo = new System.Windows.Forms.Button();
+            this.CheckItemTotal = new System.Windows.Forms.CheckBox();
             this.PanelTyLabel.SuspendLayout();
             this.PanelTyCheck.SuspendLayout();
             this.PanelTyText.SuspendLayout();
@@ -3212,6 +3213,18 @@ namespace TyTrainer
             this.ButtonHotkeyInfo.UseVisualStyleBackColor = true;
             this.ButtonHotkeyInfo.Click += new System.EventHandler(this.OpenInfoWindow);
             // 
+            // CheckItemTotal
+            // 
+            this.CheckItemTotal.AutoSize = true;
+            this.CheckItemTotal.Location = new System.Drawing.Point(520, 363);
+            this.CheckItemTotal.Name = "CheckItemTotal";
+            this.CheckItemTotal.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.CheckItemTotal.Size = new System.Drawing.Size(108, 17);
+            this.CheckItemTotal.TabIndex = 37;
+            this.CheckItemTotal.Text = "Show Item Totals";
+            this.CheckItemTotal.UseVisualStyleBackColor = true;
+            this.CheckItemTotal.Click += new System.EventHandler(this.ToggleItems);
+            // 
             // Ty2Trainer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3239,9 +3252,10 @@ namespace TyTrainer
             this.Controls.Add(this.ButtonTeleport);
             this.Controls.Add(this.LabelLastAction);
             this.Controls.Add(this.ButtonHotkeyInfo);
+            this.Controls.Add(this.CheckItemTotal);
             this.Name = "Ty2Trainer";
             this.ShowIcon = false;
-            this.Text = "Ty 2: Bush Rescue Trainer v1.2";
+            this.Text = "Ty 2: Bush Rescue Trainer v1.2.2";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CloseTasks);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.PanelTyLabel.ResumeLayout(false);
@@ -3592,6 +3606,7 @@ namespace TyTrainer
         private System.Windows.Forms.Panel MainPanelStartup;
         private System.Windows.Forms.Label LabelStartup;
         private System.Windows.Forms.Button ButtonHotkeyInfo;
+        private System.Windows.Forms.CheckBox CheckItemTotal;
     }
 }
 
