@@ -1,4 +1,4 @@
-# Ty2Trainer (v1.2)
+# Ty2Trainer (v1.2.2)
 ## Setup
 There is no setup required - simply download the most recent release (v1.2 currently) and run Ty2Trainer.exe. Even if Ty 2 is closed, the trainer will check every 5 seconds for the game to be open, and then begin to update regularly as you interact with the game.
 
@@ -10,7 +10,7 @@ In its current state, this trainer contains support for the following game value
 - Health values for Ty, Bunyips, Helicopter, Kart (racing), and Shazza's Truck
 - Ty's current grounded and swimming state, used for the "Infinite Jump" and "Infinite Swim" features.
 - Changing the value of 6 items on the pause menu's "game totals" screen.
-- Whether or not the game is paused (used to show the 6 game totals items when paused)
+- Whether or not the game is paused
 - Whether or not the game is loading a new area (used to make a more reactive UI)
 
 Internally, the trainer also uses the values of *current music title* and *character state* to determine what to display on the trainer at any given moment. Most of the .txt files in the Resources folder are related to translating this information into phrases that are used by the trainer either internally or to update the UI.
@@ -28,6 +28,17 @@ Internally, the trainer also uses the values of *current music title* and *chara
 - Button that displays general support information, and visualizes the hotkeys that were entered by the user.
 
 # Changelog
+## Changes since v1.2.1
+**Visual Tweak**
+- Changed Item Totals menu to its original state: it appears when the "Show Item Totals" checkbox is checked, and goes away when unchecked. This was done to make it easier to access the normal trainer interface even when the game is paused.
+
+## Changes since v1.2.0
+**Bug Fix**
+- Pointers for Heli/Sub X/Y/Z speed were broken. They are now working :)
+
+**Code Tweak**
+- Updated strings throughout the code to use interpolated strings instead; performance is unaffected, this just makes the code ever-so-slightly cleaner.
+
 ## Changes since v1.1.2
 **Bug Fixes**
 - Added support for the "mission fail" sound, which previously was unrecognized in the trainer.
@@ -51,13 +62,6 @@ Internally, the trainer also uses the values of *current music title* and *chara
 - Overhauled the skeleton of the code to use a Timer instead of a BackgroundWorker to handle the main trainer logic loop. Performance shouldn't be any different, but this simplified a lot of the logic in the code.
 - Added documentation strings prior to each method in the code, which should make the code much more readable and understandable for people beyond just me.
 - Too many additional tiny optimizations and improvements than would be possible to list here.
-
-## Changes since v1.2.0
-**Bug Fix**
-- Pointers for Heli/Sub X/Y/Z speed were broken. They are now working :)
-
-**Code Tweak**
-- Updated strings throughout the code to use interpolated strings instead; performance is unaffected, this just makes the code ever-so-slightly cleaner.
 
 ## Known Bugs
 - The Ty values appear on the Concept Art menu, which is a side-effect of the way I'm determining when to show which values. The concept art menu uses the same music as Outback Oasis, and I don't yet have a way to differentiate between them.
