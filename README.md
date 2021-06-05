@@ -1,4 +1,4 @@
-# Ty2Trainer (v1.2.2)
+# Ty2Trainer (v1.3)
 ## Setup
 There is no setup required - simply download the most recent release (v1.2 currently) and run Ty2Trainer.exe. Even if Ty 2 is closed, the trainer will check every 5 seconds for the game to be open, and then begin to update regularly as you interact with the game.
 
@@ -26,20 +26,27 @@ Internally, the trainer also uses the values of *current music title* and *chara
 - Buttons that allow for storing and teleporting to X/Y/Z a specific X/Y/Z position in the game (useful for teleporting back to a safe area if going out of bounds)
 - Hotkey support for adjusting the player's current X/Y/Z position or for the buttons mentioned in the previous line
 - Button that displays general support information, and visualizes the hotkeys that were entered by the user.
+- Tracking of maximum speed achieved, with ability to reset it via a button or hotkey.
 
 # Changelog
-## Changes since v1.2.1
+## v1.3 (current version)
+**New Features**
+- Added new button + label that tracks the max speed of various things in the game. For example, you can drive around in the truck and the label will display the maximum speed you achieve while doing so. This could be useful for comparing different movement tech to see if a new max speed is reached.
+- Added new hotkey that can be configured to reset the max speed currently stored (same effect as clicking the button directly).
+- New "Include Y?" checkbox for all Effective Speed values. Checking this will make it so that the effective speed value calculated uses all 3 (X/Y/Z) coordinates instead of just X and Z (horizontal).
+
+## v1.2.2
 **Visual Tweak**
 - Changed Item Totals menu to its original state: it appears when the "Show Item Totals" checkbox is checked, and goes away when unchecked. This was done to make it easier to access the normal trainer interface even when the game is paused.
 
-## Changes since v1.2.0
+## v1.2.1
 **Bug Fix**
 - Pointers for Heli/Sub X/Y/Z speed were broken. They are now working :)
 
 **Code Tweak**
 - Updated strings throughout the code to use interpolated strings instead; performance is unaffected, this just makes the code ever-so-slightly cleaner.
 
-## Changes since v1.1.2
+## v1.2
 **Bug Fixes**
 - Added support for the "mission fail" sound, which previously was unrecognized in the trainer.
 

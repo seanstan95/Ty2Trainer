@@ -20,16 +20,18 @@ namespace TyTrainer
         const string gameName = "TY the Tasmanian Tiger 2: Bush Rescue";
         int updateTime; //timer interval length        
         readonly StreamWriter logWriter = new StreamWriter("log.txt");
-        bool verboseLogging, loggedGameStatus = false;
+        bool verboseLogging, loggedGameStatus = false, includeY = false;
+        float maxSpeed = 0;
+        Label currentEffectiveSpeedLabel;
 
         //Persistent Game/Trainer Data
         readonly string[] modes = { "Bunyip", "Cutscene", "Heli", "Items", "Kart", "Sub", "Other", 
             "Ty", "Truck", "Unknown" };
+        readonly string[] gameplayModes = { "Bunyip", "Heli", "Kart", "Sub", "Ty", "Truck" };
         Panel frontPanel;
         string currentMode; //determines what UI display to use
         string currentMusicTitle = "";
         float teleportX, teleportY, teleportZ;
-        bool itemsShowing = false;
 
         //Information From Resource Files
         readonly List<string> pointerTypes = new List<string>();
@@ -56,7 +58,8 @@ namespace TyTrainer
         float XSpeed, YSpeed, ZSpeed;
         readonly List<string> customHotkeyList = new List<string>();
         readonly List<string> hotkeyNameList = new List<string>() { "XLessKey", "XMoreKey", "YLessKey",
-                "YMoreKey", "ZLessKey", "ZMoreKey", "CheckPositionKey", "SetPositionKey", "TeleportKey" };
+                "YMoreKey", "ZLessKey", "ZMoreKey", "CheckPositionKey", "SetPositionKey", 
+                "TeleportKey", "ResetMaxSpeedKey" };
         readonly List<Keys> keysList = Enum.GetValues(typeof(Keys)).Cast<Keys>().ToList();
         bool hotkeysEnabled = false;
 
@@ -250,6 +253,7 @@ namespace TyTrainer
 
             UpdateAreaState();
             UpdateLabels();
+            UpdateMaxSpeed(false);
             UpdateStatus(gameOpen); //update closed/open status
         }
 
@@ -319,6 +323,36 @@ namespace TyTrainer
         }
 
         /// <summary>
+        /// Updates the maxSpeed label, allowing for it to be reset to 0 or determined based 
+        /// on whether the current max speed is higher than the recorded one.
+        /// </summary>
+        private void UpdateMaxSpeed(bool reset)
+        {
+            if (!GetActiveWindowTitle(gameName))
+                return;
+
+            if (reset)
+            {
+                maxSpeed = 0;
+                LabelMaxSpeed.Text = "Max Speed = " + maxSpeed.ToString();
+                return;
+            }
+
+            try
+            {
+                if (float.Parse(currentEffectiveSpeedLabel.Text.Substring(17)) > maxSpeed)
+                {
+                    maxSpeed = float.Parse(currentEffectiveSpeedLabel.Text.Substring(17));
+                    LabelMaxSpeed.Text = "Max Speed = " + maxSpeed.ToString();
+                }
+            }
+            catch (FormatException)
+            {
+                LabelMaxSpeed.Text = "Max Speed = 0";
+            }
+        }
+
+        /// <summary>
         /// Updates game status label (open/closed).
         /// </summary>
         private void UpdateStatus(bool gameOpen)
@@ -374,8 +408,11 @@ namespace TyTrainer
                 currentMode = "Unknown";
 
             if (oldMode != currentMode)
+            {
                 Log($"Mode changed to {currentMode}.", "GAME", true);
-
+                UpdateMaxSpeed(true); //reset max speed value to 0 on mode change
+            }
+               
             if (oldMusic != currentMusicTitle && oldMusic != "" && currentMusicTitle != "")
                 Log($"Music changed to {musicTitleStrings[currentMusicTitle]}.", "GAME", true);
 
@@ -404,13 +441,17 @@ namespace TyTrainer
         {
             if (frontPanel.Name != "MainPanelItems" && frontPanel.Name != "MainPanelStartup")
             {
-                //Unfreeze and reset textboxes for clean swapping between modes
+                //Unfreeze/uncheck and reset textboxes for clean swapping between modes
                 foreach (CheckBox checkBox in frontPanel.GetAllNestedControls().OfType<CheckBox>().Where(check => check.Checked))
                 {
                     string name = checkBox.Name.Substring(5);
-                    Log($"Unfreezing {name}.", "FREEZE", false);
+                    if (!name.Contains("3D"))
+                    {
+                        Log($"Unfreezing {name}.", "FREEZE", false);
+                        memory.UnfreezeValue(GetPointer(checkBox.Name.Substring(5)));
+                    }
                     checkBox.Checked = false;
-                    memory.UnfreezeValue(GetPointer(checkBox.Name.Substring(5)));
+                    includeY = false;
                 }
 
                 foreach (TextBox textBox in frontPanel.GetAllNestedControls().OfType<TextBox>())
@@ -419,6 +460,12 @@ namespace TyTrainer
             Log($"Bringing {panel.Name} to front.", "UI", false);
             panel.BringToFront();
             frontPanel = panel;
+            if (gameplayModes.Contains(currentMode))
+            {
+                //update currentEffectiveSpeedLabel whenever panel changes to a gameplay mode
+                currentEffectiveSpeedLabel = (Label)frontPanel.GetAllNestedControls().First(ctrl => ctrl.Name.Contains("EffectiveSpeed"));
+                Log($"Updated currentEffectiveSpeedLabel to {currentEffectiveSpeedLabel.Name}.", "UI", true);
+            }
             SetLastAction(Color.Green, "");
         }
 
@@ -449,6 +496,11 @@ namespace TyTrainer
                     double xSpeed = memory.ReadFloat(GetPointer(currentMode + "XSpeed"));
                     double zSpeed = memory.ReadFloat(GetPointer(currentMode + "ZSpeed"));
                     double speed = Math.Sqrt(Math.Pow(xSpeed, 2) + Math.Pow(zSpeed, 2));
+                    if (includeY) //include ySpeed as 3rd dimension if needed
+                    {
+                        double ySpeed = memory.ReadFloat(GetPointer(currentMode + "YSpeed"));
+                        speed = Math.Sqrt(Math.Pow(xSpeed, 2) + Math.Pow(ySpeed, 2) + Math.Pow(zSpeed, 2));
+                    }
                     label.Text = "Effective Speed: " + speed.ToString("0.000");
                     continue;
                 }
@@ -489,6 +541,8 @@ namespace TyTrainer
                     UpdateStoredPosition(this, EventArgs.Empty);
                 else if (m.WParam.ToInt32() == 8)
                     Teleport(this, EventArgs.Empty);
+                else if (m.WParam.ToInt32() == 9)
+                    UpdateMaxSpeed(true);
             }
 
             base.WndProc(ref m);
@@ -649,6 +703,17 @@ namespace TyTrainer
             }
             else
                 currentMode = "Unknown";
+        }
+
+        private void ResetMaxSpeed(object sender, EventArgs e)
+        {
+            maxSpeed = 0;
+        }
+
+        private void ToggleY(object sender, EventArgs e)
+        {
+            Log("Enabled including Y for Effective Speed calculations.", "INFO", false);
+            includeY = !includeY;
         }
 
         /// <summary>

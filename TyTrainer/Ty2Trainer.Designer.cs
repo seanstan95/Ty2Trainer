@@ -56,6 +56,7 @@ namespace TyTrainer
             this.PanelTyCheck = new System.Windows.Forms.Panel();
             this.CheckTyXSpeed = new System.Windows.Forms.CheckBox();
             this.CheckTyZSpeed = new System.Windows.Forms.CheckBox();
+            this.CheckTy3D = new System.Windows.Forms.CheckBox();
             this.PanelTyText = new System.Windows.Forms.Panel();
             this.TextTyXSpeed = new System.Windows.Forms.TextBox();
             this.TextTyZSpeed = new System.Windows.Forms.TextBox();
@@ -112,6 +113,7 @@ namespace TyTrainer
             this.CheckTruckXSpeed = new System.Windows.Forms.CheckBox();
             this.CheckTruckYSpeed = new System.Windows.Forms.CheckBox();
             this.CheckTruckZSpeed = new System.Windows.Forms.CheckBox();
+            this.CheckTruck3D = new System.Windows.Forms.CheckBox();
             this.MainPanelClosed = new System.Windows.Forms.Panel();
             this.LabelClosed1 = new System.Windows.Forms.Label();
             this.MainPanelBunyip = new System.Windows.Forms.Panel();
@@ -148,6 +150,7 @@ namespace TyTrainer
             this.CheckBunyipXSpeed = new System.Windows.Forms.CheckBox();
             this.CheckBunyipYSpeed = new System.Windows.Forms.CheckBox();
             this.CheckBunyipZSpeed = new System.Windows.Forms.CheckBox();
+            this.CheckBunyip3D = new System.Windows.Forms.CheckBox();
             this.MainPanelHeli = new System.Windows.Forms.Panel();
             this.PanelHeliHelp = new System.Windows.Forms.Panel();
             this.HelpHeliHealthVisual = new System.Windows.Forms.Button();
@@ -182,6 +185,7 @@ namespace TyTrainer
             this.CheckHeliXSpeed = new System.Windows.Forms.CheckBox();
             this.CheckHeliYSpeed = new System.Windows.Forms.CheckBox();
             this.CheckHeliZSpeed = new System.Windows.Forms.CheckBox();
+            this.CheckHeli3D = new System.Windows.Forms.CheckBox();
             this.MainPanelKart = new System.Windows.Forms.Panel();
             this.PanelKartHelp = new System.Windows.Forms.Panel();
             this.HelpKartX = new System.Windows.Forms.Button();
@@ -212,6 +216,7 @@ namespace TyTrainer
             this.CheckKartXSpeed = new System.Windows.Forms.CheckBox();
             this.CheckKartYSpeed = new System.Windows.Forms.CheckBox();
             this.CheckKartZSpeed = new System.Windows.Forms.CheckBox();
+            this.CheckKart3D = new System.Windows.Forms.CheckBox();
             this.MainPanelCutscene = new System.Windows.Forms.Panel();
             this.LabelCutscene1 = new System.Windows.Forms.Label();
             this.MainPanelOther = new System.Windows.Forms.Panel();
@@ -253,6 +258,7 @@ namespace TyTrainer
             this.CheckSubXSpeed = new System.Windows.Forms.CheckBox();
             this.CheckSubYSpeed = new System.Windows.Forms.CheckBox();
             this.CheckSubZSpeed = new System.Windows.Forms.CheckBox();
+            this.CheckSub3D = new System.Windows.Forms.CheckBox();
             this.LabelCharacterState = new System.Windows.Forms.Label();
             this.LabelLastAction = new System.Windows.Forms.Label();
             this.MainPanelItems = new System.Windows.Forms.Panel();
@@ -305,6 +311,8 @@ namespace TyTrainer
             this.LabelStartup = new System.Windows.Forms.Label();
             this.ButtonHotkeyInfo = new System.Windows.Forms.Button();
             this.CheckItemTotal = new System.Windows.Forms.CheckBox();
+            this.ButtonResetMaxSpeed = new System.Windows.Forms.Button();
+            this.LabelMaxSpeed = new System.Windows.Forms.Label();
             this.PanelTyLabel.SuspendLayout();
             this.PanelTyCheck.SuspendLayout();
             this.PanelTyText.SuspendLayout();
@@ -594,9 +602,10 @@ namespace TyTrainer
             this.PanelTyCheck.Controls.Add(this.CheckTyXSpeed);
             this.PanelTyCheck.Controls.Add(this.CheckTyYSpeed);
             this.PanelTyCheck.Controls.Add(this.CheckTyZSpeed);
+            this.PanelTyCheck.Controls.Add(this.CheckTy3D);
             this.PanelTyCheck.Location = new System.Drawing.Point(475, 35);
             this.PanelTyCheck.Name = "PanelTyCheck";
-            this.PanelTyCheck.Size = new System.Drawing.Size(100, 325);
+            this.PanelTyCheck.Size = new System.Drawing.Size(119, 325);
             this.PanelTyCheck.TabIndex = 5;
             // 
             // CheckTyXSpeed
@@ -622,6 +631,18 @@ namespace TyTrainer
             this.CheckTyZSpeed.Text = "Freeze";
             this.CheckTyZSpeed.UseVisualStyleBackColor = true;
             this.CheckTyZSpeed.Click += new System.EventHandler(this.ToggleFreeze);
+            // 
+            // CheckTy3D
+            // 
+            this.CheckTy3D.AutoSize = true;
+            this.CheckTy3D.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckTy3D.Location = new System.Drawing.Point(5, 288);
+            this.CheckTy3D.Name = "CheckTy3D";
+            this.CheckTy3D.Size = new System.Drawing.Size(123, 29);
+            this.CheckTy3D.TabIndex = 18;
+            this.CheckTy3D.Text = "Include Y?";
+            this.CheckTy3D.UseVisualStyleBackColor = true;
+            this.CheckTy3D.Click += new System.EventHandler(this.ToggleY);
             // 
             // PanelTyText
             // 
@@ -1121,9 +1142,10 @@ namespace TyTrainer
             this.PanelTruckCheck.Controls.Add(this.CheckTruckXSpeed);
             this.PanelTruckCheck.Controls.Add(this.CheckTruckYSpeed);
             this.PanelTruckCheck.Controls.Add(this.CheckTruckZSpeed);
+            this.PanelTruckCheck.Controls.Add(this.CheckTruck3D);
             this.PanelTruckCheck.Location = new System.Drawing.Point(475, 3);
             this.PanelTruckCheck.Name = "PanelTruckCheck";
-            this.PanelTruckCheck.Size = new System.Drawing.Size(100, 325);
+            this.PanelTruckCheck.Size = new System.Drawing.Size(119, 325);
             this.PanelTruckCheck.TabIndex = 19;
             // 
             // CheckTruckHealthInternal
@@ -1221,6 +1243,17 @@ namespace TyTrainer
             this.CheckTruckZSpeed.Text = "Freeze";
             this.CheckTruckZSpeed.UseVisualStyleBackColor = true;
             this.CheckTruckZSpeed.Click += new System.EventHandler(this.ToggleFreeze);
+            // 
+            // CheckTruck3D
+            // 
+            this.CheckTruck3D.AutoSize = true;
+            this.CheckTruck3D.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckTruck3D.Location = new System.Drawing.Point(5, 288);
+            this.CheckTruck3D.Name = "CheckTruck3D";
+            this.CheckTruck3D.Size = new System.Drawing.Size(123, 29);
+            this.CheckTruck3D.TabIndex = 14;
+            this.CheckTruck3D.Text = "Include Y?";
+            this.CheckTruck3D.UseVisualStyleBackColor = true;
             // 
             // MainPanelClosed
             // 
@@ -1512,9 +1545,10 @@ namespace TyTrainer
             this.PanelBunyipCheck.Controls.Add(this.CheckBunyipXSpeed);
             this.PanelBunyipCheck.Controls.Add(this.CheckBunyipYSpeed);
             this.PanelBunyipCheck.Controls.Add(this.CheckBunyipZSpeed);
+            this.PanelBunyipCheck.Controls.Add(this.CheckBunyip3D);
             this.PanelBunyipCheck.Location = new System.Drawing.Point(475, 3);
             this.PanelBunyipCheck.Name = "PanelBunyipCheck";
-            this.PanelBunyipCheck.Size = new System.Drawing.Size(100, 290);
+            this.PanelBunyipCheck.Size = new System.Drawing.Size(119, 290);
             this.PanelBunyipCheck.TabIndex = 19;
             // 
             // CheckBunyipHealthVisual
@@ -1569,7 +1603,7 @@ namespace TyTrainer
             // 
             this.CheckBunyipXSpeed.AutoSize = true;
             this.CheckBunyipXSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckBunyipXSpeed.Location = new System.Drawing.Point(5, 150);
+            this.CheckBunyipXSpeed.Location = new System.Drawing.Point(5, 148);
             this.CheckBunyipXSpeed.Name = "CheckBunyipXSpeed";
             this.CheckBunyipXSpeed.Size = new System.Drawing.Size(92, 29);
             this.CheckBunyipXSpeed.TabIndex = 10;
@@ -1581,7 +1615,7 @@ namespace TyTrainer
             // 
             this.CheckBunyipYSpeed.AutoSize = true;
             this.CheckBunyipYSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckBunyipYSpeed.Location = new System.Drawing.Point(5, 185);
+            this.CheckBunyipYSpeed.Location = new System.Drawing.Point(5, 183);
             this.CheckBunyipYSpeed.Name = "CheckBunyipYSpeed";
             this.CheckBunyipYSpeed.Size = new System.Drawing.Size(92, 29);
             this.CheckBunyipYSpeed.TabIndex = 11;
@@ -1593,13 +1627,24 @@ namespace TyTrainer
             // 
             this.CheckBunyipZSpeed.AutoSize = true;
             this.CheckBunyipZSpeed.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckBunyipZSpeed.Location = new System.Drawing.Point(5, 220);
+            this.CheckBunyipZSpeed.Location = new System.Drawing.Point(5, 218);
             this.CheckBunyipZSpeed.Name = "CheckBunyipZSpeed";
             this.CheckBunyipZSpeed.Size = new System.Drawing.Size(92, 29);
             this.CheckBunyipZSpeed.TabIndex = 12;
             this.CheckBunyipZSpeed.Text = "Freeze";
             this.CheckBunyipZSpeed.UseVisualStyleBackColor = true;
             this.CheckBunyipZSpeed.Click += new System.EventHandler(this.ToggleFreeze);
+            // 
+            // CheckBunyip3D
+            // 
+            this.CheckBunyip3D.AutoSize = true;
+            this.CheckBunyip3D.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckBunyip3D.Location = new System.Drawing.Point(5, 253);
+            this.CheckBunyip3D.Name = "CheckBunyip3D";
+            this.CheckBunyip3D.Size = new System.Drawing.Size(123, 29);
+            this.CheckBunyip3D.TabIndex = 13;
+            this.CheckBunyip3D.Text = "Include Y?";
+            this.CheckBunyip3D.UseVisualStyleBackColor = true;
             // 
             // MainPanelHeli
             // 
@@ -1872,9 +1917,10 @@ namespace TyTrainer
             this.PanelHeliCheck.Controls.Add(this.CheckHeliXSpeed);
             this.PanelHeliCheck.Controls.Add(this.CheckHeliYSpeed);
             this.PanelHeliCheck.Controls.Add(this.CheckHeliZSpeed);
+            this.PanelHeliCheck.Controls.Add(this.CheckHeli3D);
             this.PanelHeliCheck.Location = new System.Drawing.Point(475, 3);
             this.PanelHeliCheck.Name = "PanelHeliCheck";
-            this.PanelHeliCheck.Size = new System.Drawing.Size(100, 290);
+            this.PanelHeliCheck.Size = new System.Drawing.Size(119, 290);
             this.PanelHeliCheck.TabIndex = 19;
             // 
             // CheckHeliHealthVisual
@@ -1960,6 +2006,17 @@ namespace TyTrainer
             this.CheckHeliZSpeed.Text = "Freeze";
             this.CheckHeliZSpeed.UseVisualStyleBackColor = true;
             this.CheckHeliZSpeed.Click += new System.EventHandler(this.ToggleFreeze);
+            // 
+            // CheckHeli3D
+            // 
+            this.CheckHeli3D.AutoSize = true;
+            this.CheckHeli3D.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckHeli3D.Location = new System.Drawing.Point(5, 253);
+            this.CheckHeli3D.Name = "CheckHeli3D";
+            this.CheckHeli3D.Size = new System.Drawing.Size(123, 29);
+            this.CheckHeli3D.TabIndex = 13;
+            this.CheckHeli3D.Text = "Include Y?";
+            this.CheckHeli3D.UseVisualStyleBackColor = true;
             // 
             // MainPanelKart
             // 
@@ -2200,9 +2257,10 @@ namespace TyTrainer
             this.PanelKartCheck.Controls.Add(this.CheckKartXSpeed);
             this.PanelKartCheck.Controls.Add(this.CheckKartYSpeed);
             this.PanelKartCheck.Controls.Add(this.CheckKartZSpeed);
+            this.PanelKartCheck.Controls.Add(this.CheckKart3D);
             this.PanelKartCheck.Location = new System.Drawing.Point(475, 3);
             this.PanelKartCheck.Name = "PanelKartCheck";
-            this.PanelKartCheck.Size = new System.Drawing.Size(100, 255);
+            this.PanelKartCheck.Size = new System.Drawing.Size(119, 255);
             this.PanelKartCheck.TabIndex = 19;
             // 
             // CheckKartX
@@ -2276,6 +2334,17 @@ namespace TyTrainer
             this.CheckKartZSpeed.Text = "Freeze";
             this.CheckKartZSpeed.UseVisualStyleBackColor = true;
             this.CheckKartZSpeed.Click += new System.EventHandler(this.ToggleFreeze);
+            // 
+            // CheckKart3D
+            // 
+            this.CheckKart3D.AutoSize = true;
+            this.CheckKart3D.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckKart3D.Location = new System.Drawing.Point(5, 218);
+            this.CheckKart3D.Name = "CheckKart3D";
+            this.CheckKart3D.Size = new System.Drawing.Size(123, 29);
+            this.CheckKart3D.TabIndex = 10;
+            this.CheckKart3D.Text = "Include Y?";
+            this.CheckKart3D.UseVisualStyleBackColor = true;
             // 
             // MainPanelCutscene
             // 
@@ -2616,9 +2685,10 @@ namespace TyTrainer
             this.PanelSubCheck.Controls.Add(this.CheckSubXSpeed);
             this.PanelSubCheck.Controls.Add(this.CheckSubYSpeed);
             this.PanelSubCheck.Controls.Add(this.CheckSubZSpeed);
+            this.PanelSubCheck.Controls.Add(this.CheckSub3D);
             this.PanelSubCheck.Location = new System.Drawing.Point(475, 3);
             this.PanelSubCheck.Name = "PanelSubCheck";
-            this.PanelSubCheck.Size = new System.Drawing.Size(100, 290);
+            this.PanelSubCheck.Size = new System.Drawing.Size(119, 290);
             this.PanelSubCheck.TabIndex = 19;
             // 
             // CheckSubHealthVisual
@@ -2704,6 +2774,17 @@ namespace TyTrainer
             this.CheckSubZSpeed.Text = "Freeze";
             this.CheckSubZSpeed.UseVisualStyleBackColor = true;
             this.CheckSubZSpeed.Click += new System.EventHandler(this.ToggleFreeze);
+            // 
+            // CheckSub3D
+            // 
+            this.CheckSub3D.AutoSize = true;
+            this.CheckSub3D.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckSub3D.Location = new System.Drawing.Point(5, 253);
+            this.CheckSub3D.Name = "CheckSub3D";
+            this.CheckSub3D.Size = new System.Drawing.Size(123, 29);
+            this.CheckSub3D.TabIndex = 13;
+            this.CheckSub3D.Text = "Include Y?";
+            this.CheckSub3D.UseVisualStyleBackColor = true;
             // 
             // LabelCharacterState
             // 
@@ -3225,6 +3306,25 @@ namespace TyTrainer
             this.CheckItemTotal.UseVisualStyleBackColor = true;
             this.CheckItemTotal.Click += new System.EventHandler(this.ToggleItems);
             // 
+            // ButtonResetMaxSpeed
+            // 
+            this.ButtonResetMaxSpeed.Location = new System.Drawing.Point(5, 360);
+            this.ButtonResetMaxSpeed.Name = "ButtonResetMaxSpeed";
+            this.ButtonResetMaxSpeed.Size = new System.Drawing.Size(100, 23);
+            this.ButtonResetMaxSpeed.TabIndex = 38;
+            this.ButtonResetMaxSpeed.Text = "Reset Max Speed";
+            this.ButtonResetMaxSpeed.UseVisualStyleBackColor = true;
+            this.ButtonResetMaxSpeed.Click += new System.EventHandler(this.ResetMaxSpeed);
+            // 
+            // LabelMaxSpeed
+            // 
+            this.LabelMaxSpeed.AutoSize = true;
+            this.LabelMaxSpeed.Location = new System.Drawing.Point(105, 365);
+            this.LabelMaxSpeed.Name = "LabelMaxSpeed";
+            this.LabelMaxSpeed.Size = new System.Drawing.Size(67, 13);
+            this.LabelMaxSpeed.TabIndex = 39;
+            this.LabelMaxSpeed.Text = "Max Speed: ";
+            // 
             // Ty2Trainer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3253,6 +3353,8 @@ namespace TyTrainer
             this.Controls.Add(this.LabelLastAction);
             this.Controls.Add(this.ButtonHotkeyInfo);
             this.Controls.Add(this.CheckItemTotal);
+            this.Controls.Add(this.LabelMaxSpeed);
+            this.Controls.Add(this.ButtonResetMaxSpeed);
             this.Name = "Ty2Trainer";
             this.ShowIcon = false;
             this.Text = "Ty 2: Bush Rescue Trainer v1.2.2";
@@ -3607,6 +3709,14 @@ namespace TyTrainer
         private System.Windows.Forms.Label LabelStartup;
         private System.Windows.Forms.Button ButtonHotkeyInfo;
         private System.Windows.Forms.CheckBox CheckItemTotal;
+        private System.Windows.Forms.Button ButtonResetMaxSpeed;
+        private System.Windows.Forms.Label LabelMaxSpeed;
+        private System.Windows.Forms.CheckBox CheckTy3D;
+        private System.Windows.Forms.CheckBox CheckTruck3D;
+        private System.Windows.Forms.CheckBox CheckBunyip3D;
+        private System.Windows.Forms.CheckBox CheckHeli3D;
+        private System.Windows.Forms.CheckBox CheckKart3D;
+        private System.Windows.Forms.CheckBox CheckSub3D;
     }
 }
 
