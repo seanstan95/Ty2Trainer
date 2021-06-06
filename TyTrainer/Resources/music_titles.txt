@@ -4,7 +4,7 @@ m2 m13 m14 m28 m33
 itemsPlaceholder
 r1 r1_ll r2 r2_ll r3 r3_ll r4 r4_ll r6 r6_ll r7 r7_ll r9 r9_ll
 m40 m64
-mainmenu kartmenu mopoke shop1 shop2 shop3 b36 garage1 race_win
+mainmenu kartmenu mopoke shop1 shop2 shop3 b36 garage1 race_win race_lose
 a1_cavern a4 a5 cr1 c4 m1 m4 m6 m12 m20 m46 m47 m59 m88 z1 z2 beach cave sewer
 z4_4b
 a1 a2 a3 b3 m16 m37 m38 m39 m52 m87 z3 z3_2 z3_4 z3_5 z3_6

@@ -1,4 +1,4 @@
-# Ty2Trainer (v1.3)
+# Ty2Trainer (v1.3.1)
 ## Setup
 There is no setup required - simply download the most recent release (v1.2 currently) and run Ty2Trainer.exe. Even if Ty 2 is closed, the trainer will check every 5 seconds for the game to be open, and then begin to update regularly as you interact with the game.
 
@@ -29,7 +29,12 @@ Internally, the trainer also uses the values of *current music title* and *chara
 - Tracking of maximum speed achieved, with ability to reset it via a button or hotkey.
 
 # Changelog
-## v1.3 (current version)
+## v1.3.1 (current version)
+**Bug Fix**
+- Fixed crash due to the "race lost" sound not being tracked in the list of game sounds.
+- Fixed crash due to trainer attempting to access a label while still set to null.
+
+## v1.3
 **New Features**
 - Added new button + label that tracks the max speed of various things in the game. For example, you can drive around in the truck and the label will display the maximum speed you achieve while doing so. This could be useful for comparing different movement tech to see if a new max speed is reached.
 - Added new hotkey that can be configured to reset the max speed currently stored (same effect as clicking the button directly).

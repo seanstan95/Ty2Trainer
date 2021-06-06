@@ -60,6 +60,7 @@ shop3 Sly's_Shack
 b36 Stone_Beetle
 garage1 Race_Garage
 race_win Race_Results
+race_lose Race_Results
 a1_cavern Outback_Oasis_Cave
 a4 Patchy_Fight
 a5 Faire_Dinkuum

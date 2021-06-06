@@ -328,7 +328,7 @@ namespace TyTrainer
         /// </summary>
         private void UpdateMaxSpeed(bool reset)
         {
-            if (!GetActiveWindowTitle(gameName))
+            if (!GetActiveWindowTitle(gameName) || !gameplayModes.Contains(currentMode))
                 return;
 
             if (reset)
