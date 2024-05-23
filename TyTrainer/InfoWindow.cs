@@ -13,7 +13,7 @@ namespace TyTrainer
         private void OpenLink(object sender, LinkLabelLinkClickedEventArgs e)
         {
             LabelSupportInfo.LinkVisited = true;
-            System.Diagnostics.Process.Start("https://github.com/PhoenixAki/Ty2Trainer");
+            System.Diagnostics.Process.Start("https://github.com/seanstan95/Ty2Trainer");
         }
     }
 }

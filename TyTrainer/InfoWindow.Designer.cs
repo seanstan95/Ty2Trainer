@@ -42,7 +42,7 @@ namespace TyTrainer
             this.PanelInformation.Controls.Add(this.LabelSupportInfo);
             this.PanelInformation.Location = new System.Drawing.Point(12, 12);
             this.PanelInformation.Name = "PanelInformation";
-            this.PanelInformation.Size = new System.Drawing.Size(460, 337);
+            this.PanelInformation.Size = new System.Drawing.Size(460, 425);
             this.PanelInformation.TabIndex = 0;
             // 
             // LabelHotkey
@@ -58,14 +58,14 @@ namespace TyTrainer
             // LabelSupportInfo
             // 
             this.LabelSupportInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelSupportInfo.LinkArea = new System.Windows.Forms.LinkArea(84, 40);
+            this.LabelSupportInfo.LinkArea = new System.Windows.Forms.LinkArea(59, 40);
             this.LabelSupportInfo.Location = new System.Drawing.Point(3, 5);
             this.LabelSupportInfo.Name = "LabelSupportInfo";
             this.LabelSupportInfo.Size = new System.Drawing.Size(419, 120);
             this.LabelSupportInfo.TabIndex = 1;
             this.LabelSupportInfo.TabStop = true;
-            this.LabelSupportInfo.Text = "Support Information:\r\nCreator: PhoenixAki\r\nDiscord Tag: Phoenix#0353\r\nGitHub Link" +
-    ":\r\nhttps://github.com/PhoenixAki/Ty2Trainer";
+            this.LabelSupportInfo.Text = "Support Information:\r\nCreator: seanstan95\r\nGitHub Project: https://github.com/sea" +
+    "nstan95/Ty2Trainer";
             this.LabelSupportInfo.UseCompatibleTextRendering = true;
             this.LabelSupportInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OpenLink);
             // 
@@ -73,10 +73,11 @@ namespace TyTrainer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 361);
+            this.ClientSize = new System.Drawing.Size(484, 449);
             this.Controls.Add(this.PanelInformation);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "InfoWindow";
-            this.Text = "Form1";
+            this.Text = "Support & Hotkeys";
             this.PanelInformation.ResumeLayout(false);
             this.PanelInformation.PerformLayout();
             this.ResumeLayout(false);

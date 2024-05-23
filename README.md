@@ -1,6 +1,7 @@
-# Ty2Trainer (v1.3.1)
+# Ty2Trainer (v1.4)
 ## Setup
-There is no setup required - simply download the most recent release (v1.3.1 currently) and run Ty2Trainer.exe. Even if Ty 2 is closed, the trainer will check every 5 seconds for the game to be open, and then begin to update regularly as you interact with the game.
+There is no setup required - simply download the most recent release (v1.4 currently) and run Ty2Trainer.exe. Even if Ty 2 is closed, the trainer will check every 5 seconds for the game to be open, and then begin to update regularly as you interact with the game.
+**Note: A new feature in 1.4 allows you to choose whether to load values for the patch we used to speedrun or the currently live version of the game (as of May 2024). Make sure you update this setting if necessary else the trainer will likely stay on "unknown area".**
 
 ## Overview
 **Support for Game Values:**

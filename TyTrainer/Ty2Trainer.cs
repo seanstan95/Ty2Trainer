@@ -18,6 +18,7 @@ namespace TyTrainer
         //General Purpose
         readonly Mem memory = new Mem();
         const string gameName = "TY the Tasmanian Tiger 2: Bush Rescue";
+        string gameVersion; //determines which list of pointers to return, can be "speedrun" or "live"
         int updateTime; //timer interval length        
         readonly StreamWriter logWriter = new StreamWriter("log.txt");
         bool verboseLogging, loggedGameStatus = false, includeY = false;
@@ -36,7 +37,7 @@ namespace TyTrainer
         //Information From Resource Files
         readonly List<string> pointerTypes = new List<string>();
         readonly List<string> pointerNames = new List<string>();
-        readonly List<string> pointerAddresses = new List<string>();
+        readonly List<string> speedrunPointerAddresses = new List<string>(), livePointerAddresses = new List<string>();
         List<string> helpTexts = new List<string>();
         readonly List<List<string>> musicTitles = new List<List<string>>(); //stores music titles by category
 
@@ -116,6 +117,18 @@ namespace TyTrainer
             ZSpeed = float.Parse(ConfigurationManager.AppSettings.Get("ZSpeed"));
             Log($"ZSpeed set to {ZSpeed}.", "SETUP", true);
 
+            string version = ConfigurationManager.AppSettings.Get("GameVersion");
+            if(version == "live" || version == "speedrun")
+            {
+                gameVersion = version;
+                Log($"gameVersion set to {version}.", "SETUP", true);
+            }
+            else
+            {
+                Log($"Error loading game version from App.config. Defaulting to 'speedrun'.", "SETUP", false);
+                gameVersion = "speedrun";
+            }
+
             for (int i = 0; i < hotkeyNameList.Count; ++i)
             {
                 customHotkeyList.Add(ConfigurationManager.AppSettings.Get(hotkeyNameList[i]));
@@ -139,18 +152,28 @@ namespace TyTrainer
         /// </summary>
         private void ReadResourceFiles()
         {
+            Log("Loading resource files...", "SETUP", false);
             Assembly asm = Assembly.GetExecutingAssembly();
 
-            //pointers.txt: pointer types, names, addresses
-            Log("Loading resource files...", "SETUP", false);
-            Log("Reading pointers.txt.", "SETUP", true);
-            List<string> lines = GetLines(asm, "pointers.txt");
+            //speedrun_pointers.txt: pointer types, names, addresses for the speedrun build of the game (v112)
+            Log("Reading speedrun_pointers.txt.", "SETUP", true);
+            List<string> lines = GetLines(asm, "speedrun_pointers.txt");
             foreach (string line in lines)
             {
                 string[] split = line.Split(' ');
                 pointerTypes.Add(split[0]);
                 pointerNames.Add(split[1]);
-                pointerAddresses.Add(split[2]);
+                speedrunPointerAddresses.Add(split[2]);
+            }
+
+            //live_pointers.txt: pointer types, names, addresses for the live version of the game (v1.86)
+            //only handles [2] because the file is set up identically to speedrun_pointers.txt but only the pointer part is necessary
+            Log("Reading live_pointers.txt.", "SETUP", true);
+            lines = GetLines(asm, "live_pointers.txt");
+            foreach (string line in lines)
+            {
+                string[] split = line.Split(' ');
+                livePointerAddresses.Add(split[2]);
             }
 
             //music_titles.txt: lists of music titles in order of category
@@ -213,10 +236,15 @@ namespace TyTrainer
         /// <returns>The pointer address associated to the given pointer name.</returns>
         private string GetPointer(string name)
         {
-            if (pointerNames.IndexOf(name) != -1)
-                return pointerAddresses[pointerNames.IndexOf(name)]; //returns pointer address given a pointer name
-            else
+            if (pointerNames.IndexOf(name) == -1)
                 return "";
+
+            if (gameVersion == "live")
+                return livePointerAddresses[pointerNames.IndexOf(name)];
+            else if (gameVersion == "speedrun")
+                return speedrunPointerAddresses[pointerNames.IndexOf(name)];
+            else
+                return ""; //this will never happen (gameVersion is always "live" or "speedrun")
         }
 
         /// <summary>

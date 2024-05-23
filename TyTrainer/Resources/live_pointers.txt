@@ -1,5 +1,5 @@
-int BilbiesBottom base+43B7D8
-int BilbiesTop base+43B7DC
+int BilbiesBottom base+4EB7D8
+int BilbiesTop base+4EB7DC
 float BunyipHealthVisual base+004EC690,3C,38,70,610
 float BunyipX base+004E4ABC,98,70,4DC
 float BunyipXSpeed base+004E4ABC,98,70,524

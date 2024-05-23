@@ -2397,11 +2397,12 @@ namespace TyTrainer
             // 
             this.LabelUnknown1.AutoSize = true;
             this.LabelUnknown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LabelUnknown1.Location = new System.Drawing.Point(193, 91);
+            this.LabelUnknown1.Location = new System.Drawing.Point(128, 32);
             this.LabelUnknown1.Name = "LabelUnknown1";
-            this.LabelUnknown1.Size = new System.Drawing.Size(241, 39);
+            this.LabelUnknown1.Size = new System.Drawing.Size(386, 156);
             this.LabelUnknown1.TabIndex = 2;
-            this.LabelUnknown1.Text = "Unknown Area";
+            this.LabelUnknown1.Text = "Unknown Area\r\nMake sure you have the\r\nright game version set in\r\nTyTrainer.exe.co" +
+    "nfig!";
             this.LabelUnknown1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // LabelCurrentArea
@@ -3355,9 +3356,10 @@ namespace TyTrainer
             this.Controls.Add(this.CheckItemTotal);
             this.Controls.Add(this.LabelMaxSpeed);
             this.Controls.Add(this.ButtonResetMaxSpeed);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Ty2Trainer";
             this.ShowIcon = false;
-            this.Text = "Ty 2: Bush Rescue Trainer v1.2.2";
+            this.Text = "Ty 2: Bush Rescue Trainer v1.4";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CloseTasks);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.PanelTyLabel.ResumeLayout(false);

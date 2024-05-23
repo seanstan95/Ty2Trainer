@@ -8,9 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
-namespace TyTrainer.Properties
-{
+namespace TyTrainer.Properties {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -18,52 +19,88 @@ namespace TyTrainer.Properties
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources
-    {
-
+    internal class Resources {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources()
-        {
+        internal Resources() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager
-        {
-            get
-            {
-                if ((resourceMan == null))
-                {
+        internal static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TyTrainer.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture
-        {
-            get
-            {
+        internal static global::System.Globalization.CultureInfo Culture {
+            get {
                 return resourceCulture;
             }
-            set
-            {
+            set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to int BilbiesBottom base+43B7D8
+        ///int BilbiesTop base+43B7DC
+        ///float BunyipHealthVisual base+004EC690,3C,38,70,610
+        ///float BunyipX base+004E4ABC,98,70,4DC
+        ///float BunyipXSpeed base+004E4ABC,98,70,524
+        ///float BunyipY base+004E4ABC,98,70,4E0
+        ///float BunyipYSpeed base+004E4ABC,98,70,528
+        ///float BunyipZ base+004E4ABC,98,70,4E4
+        ///float BunyipZSpeed base+004E4ABC,98,70,52C
+        ///int CharacterState base+004E4ABC,60,60,2C
+        ///int CogsBottom base+4EB7C4
+        ///int CogsTop base+4EB7C8
+        ///string CurrentMusicTitle base+4F392A
+        ///int GameLoading b [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string live_pointers {
+            get {
+                return ResourceManager.GetString("live_pointers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to int BilbiesBottom base+00446774,11C
+        ///int BilbiesTop base+00446774,120
+        ///float BunyipHealthVisual base+00447638,70,608
+        ///float BunyipX base+00447638,70,4DC
+        ///float BunyipXSpeed base+00447638,70,524
+        ///float BunyipY base+00447638,70,4E0
+        ///float BunyipYSpeed base+00447638,70,528
+        ///float BunyipZ base+00447638,70,4E4
+        ///float BunyipZSpeed base+00447638,70,52C
+        ///int CharacterState base+0043EC7C,60,60,2C
+        ///int CogsBottom base+00446774,108
+        ///int CogsTop base+00446774,10C
+        ///string CurrentMusicTitle base+00274F6C,26
+        ///int GameLoad [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string speedrun_pointers {
+            get {
+                return ResourceManager.GetString("speedrun_pointers", resourceCulture);
             }
         }
     }

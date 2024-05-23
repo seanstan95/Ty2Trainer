@@ -85,6 +85,7 @@ namespace TyTrainer
             this.Controls.Add(this.PanelInformation);
             this.Controls.Add(this.DataType);
             this.Controls.Add(this.HelpName);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "HelpWindow";
             this.Text = "Help";
             this.PanelInformation.ResumeLayout(false);
