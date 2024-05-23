@@ -1,5 +1,16 @@
 # Changelog
-## v1.3.1 (current version)
+## v1.4 (current version)
+**New Values**
+- Included support for the current (as of May 2024) build of the game live on steam. TyTrainer.exe.config contains a new "GameVersion" setting to choose between "speedrun" and "live" for this purpose.
+- This includes fixing one value that had a typo in the Pre-1.4 update commit.
+
+**Tweaks**
+- Updated program windows to not be resizable to minimize chance of issues with layout.
+
+**Other**
+- Updated name references to match current GitHub username.
+
+## v1.3.1
 **Bug Fix**
 - Fixed crash due to the "race lost" sound not being tracked in the list of game sounds.
 - Fixed crash due to trainer attempting to access a label while still set to null.
