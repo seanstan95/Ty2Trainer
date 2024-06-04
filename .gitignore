@@ -9,8 +9,9 @@
 *.userosscache
 *.sln.docstates
 
-# Project Notes to Self
+# Project References
 Values to Find.txt
+Pointer Scanning/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
